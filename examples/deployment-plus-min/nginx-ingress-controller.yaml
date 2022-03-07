@@ -1,0 +1,15 @@
+apiVersion: k8s.nginx.org/v1alpha1
+kind: NginxIngressController
+metadata:
+  name: my-nginx-ingress-controller
+  namespace: my-nginx-ingress
+spec:
+  type: deployment
+  nginxPlus: true
+  image:
+    repository: nginx-plus-ingress
+    tag: 2.1.0-ubi
+    pullPolicy: IfNotPresent
+  replicas: 1
+  serviceType: NodePort
+  ingressClass: nginx
