@@ -3,3 +3,7 @@ controller:
   image:
     repository: nginx-plus-ingress
     tag: "2.2.0"
+  enableLatencyMetrics: true
+nginxServiceMesh:
+  enable: true
+  enableEgress: true

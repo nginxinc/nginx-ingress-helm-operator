@@ -20,11 +20,14 @@ spec:
     customPorts: []
     defaultTLS:
       secret: nginx-ingress/default-server-secret
+    enableCertManager: false
     enableCustomResources: true
     enableLatencyMetrics: false
+    enableOIDC: false
     enablePreviewPolicies: false
     enableSnippets: false
     enableTLSPassthrough: false
+    extraContainers: []
     globalConfiguration:
       create: false
       spec: {}
@@ -34,7 +37,7 @@ spec:
     image:
       pullPolicy: IfNotPresent
       repository: nginx/nginx-ingress
-      tag: 2.1.0-ubi
+      tag: 2.2.0-ubi
     ingressClass: nginx
     initContainers: []
     kind: deployment
@@ -80,7 +83,7 @@ spec:
         targetPort: 443
       loadBalancerIP: ""
       loadBalancerSourceRanges: []
-      type: NodePort
+      type: LoadBalancer
     serviceAccount:
       imagePullSecretName: ""
     setAsDefaultIngress: false
@@ -91,6 +94,9 @@ spec:
     watchNamespace: ""
     wildcardTLS:
       secret: null
+  nginxServiceMesh:
+    enable: false
+    enableEgress: false
   prometheus:
     create: true
     port: 9113

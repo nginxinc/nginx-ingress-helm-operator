@@ -1,4 +1,3 @@
-{{- if .Values.controller.ingressClass }}
 apiVersion: networking.k8s.io/v1
 kind: IngressClass
 metadata:
@@ -9,4 +8,3 @@ metadata:
 {{- end }}
 spec:
   controller: nginx.org/ingress-controller
-{{- end }}

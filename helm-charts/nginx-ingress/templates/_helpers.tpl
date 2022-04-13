@@ -18,14 +18,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
-Create operator labels
-*/}}
-{{- define "nginx-ingress-operator.labels" -}}
-helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end -}}
-
-{{/*
 Expand the name of the configmap.
 */}}
 {{- define "nginx-ingress.configName" -}}
