@@ -123,3 +123,14 @@ rules:
   - list
   - watch
   - get
+- apiGroups:
+  - cert-manager.io
+  resources:
+  - certificates
+  verbs:
+  - list
+  - watch
+  - get
+  - update
+  - create
+  - delete

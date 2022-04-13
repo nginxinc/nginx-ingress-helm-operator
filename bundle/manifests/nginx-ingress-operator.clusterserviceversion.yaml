@@ -31,11 +31,14 @@ metadata:
               "defaultTLS": {
                 "secret": "nginx-ingress/default-server-secret"
               },
+              "enableCertManager": false,
               "enableCustomResources": true,
               "enableLatencyMetrics": false,
+              "enableOIDC": false,
               "enablePreviewPolicies": false,
               "enableSnippets": false,
               "enableTLSPassthrough": false,
+              "extraContainers": [],
               "globalConfiguration": {
                 "create": false,
                 "spec": {}
@@ -46,7 +49,7 @@ metadata:
               "image": {
                 "pullPolicy": "IfNotPresent",
                 "repository": "nginx/nginx-ingress",
-                "tag": "2.1.0-ubi"
+                "tag": "2.2.0-ubi"
               },
               "ingressClass": "nginx",
               "initContainers": [],
@@ -99,7 +102,7 @@ metadata:
                 },
                 "loadBalancerIP": "",
                 "loadBalancerSourceRanges": [],
-                "type": "NodePort"
+                "type": "LoadBalancer"
               },
               "serviceAccount": {
                 "imagePullSecretName": ""
@@ -113,6 +116,10 @@ metadata:
               "wildcardTLS": {
                 "secret": null
               }
+            },
+            "nginxServiceMesh": {
+              "enable": false,
+              "enableEgress": false
             },
             "prometheus": {
               "create": true,
@@ -289,7 +296,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: image-registry.openshift-image-registry.svc:5000/openshift-operators/nginx-ingress-operator:1.0.0
+                image: registry.connect.redhat.com/nginx/nginx-ingress-operator:1.0.0
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -303,13 +310,7 @@ spec:
                     port: 8081
                   initialDelaySeconds: 5
                   periodSeconds: 10
-                resources:
-                  limits:
-                    cpu: 500m
-                    memory: 256Mi
-                  requests:
-                    cpu: 500m
-                    memory: 128Mi
+                resources: {}
                 securityContext:
                   allowPrivilegeEscalation: false
               - args:

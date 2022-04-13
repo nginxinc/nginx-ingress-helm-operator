@@ -308,9 +308,6 @@ spec:
                   initialDelaySeconds: 5
                   periodSeconds: 10
                 resources:
-                  limits:
-                    cpu: 500m
-                    memory: 256Mi
                   requests:
                     cpu: 500m
                     memory: 128Mi
@@ -327,7 +324,10 @@ spec:
                 - containerPort: 8443
                   name: https
                   protocol: TCP
-                resources: {}
+                resources:
+                  requests:
+                    cpu: 500m
+                    memory: 128Mi
               securityContext:
                 runAsNonRoot: true
               serviceAccountName: nginx-ingress-operator-controller-manager
