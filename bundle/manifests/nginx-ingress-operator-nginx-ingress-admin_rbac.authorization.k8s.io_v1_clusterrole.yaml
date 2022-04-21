@@ -113,6 +113,7 @@ rules:
   - virtualserverroutes/status
   - policies/status
   - transportservers/status
+  - virtualservers/finalizers
   verbs:
   - update
 - apiGroups:
