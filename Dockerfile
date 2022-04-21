@@ -1,4 +1,4 @@
-FROM registry.redhat.io/openshift4/ose-helm-operator:v4.9
+FROM registry.redhat.io/openshift4/ose-helm-operator:v4.10
 
 ARG VERSION
 
