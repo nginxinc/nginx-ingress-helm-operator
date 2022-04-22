@@ -13,7 +13,7 @@ This will deploy the operator in the `nginx-ingress-operator-system` namespace.
 
    2. `Openshift` To deploy the Operator and associated resources to an OpenShift environment, run:
     ```
-    make deploy IMG=registry.connect.redhat.com/nginx/nginx-ingress-operator:1.0.0
+    make deploy IMG=nginx/nginx-ingress-operator:1.0.0
     ```
 
    3. Alternatively, to deploy the Operator and associated resources to all other environments:

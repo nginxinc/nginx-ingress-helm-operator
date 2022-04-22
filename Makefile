@@ -192,3 +192,8 @@ catalog-build: opm ## Build a catalog image.
 .PHONY: catalog-push
 catalog-push: ## Push a catalog image.
 	$(MAKE) docker-push IMG=$(CATALOG_IMG)
+
+# Get medatada to prepare the bundle to be submitted at https://github.com/redhat-openshift-ecosystem/certified-operators/
+.PHONY: get-metadata-certification
+get-metadata-certification:
+	@./hack/get_image_info.sh ${IMAGE_TAG_BASE} ${VERSION}

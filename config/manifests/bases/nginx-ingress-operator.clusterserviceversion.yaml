@@ -131,12 +131,12 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: registry.connect.redhat.com/nginx/nginx-ingress-operator:1.0.0
+    containerImage: nginx/nginx-ingress-operator:1.0.0
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
-    operators.operatorframework.io/builder: operator-sdk-v1.10.1-ocp
+    operators.operatorframework.io/builder: operator-sdk-v1.16.0-ocp
     operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
-    repository: https://github.com/nginxinc/nginx-ingress-operator-helm
+    repository: https://github.com/nginxinc/nginx-ingress-helm-operator
     support: NGINX Inc.
   name: nginx-ingress-operator.v1.0.0
   namespace: openshift-operators
@@ -144,7 +144,9 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
-    - displayName: Nginx Ingress Controller
+    - description: The `NginxIngress` Custom Resource is the definition of a deployment
+        of the Ingress Controller.
+      displayName: Nginx Ingress Controller
       kind: NginxIngress
       name: nginxingresses.charts.nginx.org
       version: v1alpha1
@@ -293,7 +295,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: image-registry.openshift-image-registry.svc:5000/openshift-operators/nginx-ingress-operator:1.0.0
+                image: nginx/nginx-ingress-operator:1.0.0
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -308,8 +310,11 @@ spec:
                   initialDelaySeconds: 5
                   periodSeconds: 10
                 resources:
-                  requests:
+                  limits:
                     cpu: 500m
+                    memory: 256Mi
+                  requests:
+                    cpu: 250m
                     memory: 128Mi
                 securityContext:
                   allowPrivilegeEscalation: false
@@ -325,9 +330,12 @@ spec:
                   name: https
                   protocol: TCP
                 resources:
-                  requests:
+                  limits:
                     cpu: 500m
                     memory: 128Mi
+                  requests:
+                    cpu: 5m
+                    memory: 64Mi
               securityContext:
                 runAsNonRoot: true
               serviceAccountName: nginx-ingress-operator-controller-manager
@@ -385,7 +393,7 @@ spec:
   - openshift
   links:
   - name: Nginx Ingress Operator
-    url: https://github.com/nginxinc/nginx-ingress-operator
+    url: https://github.com/nginxinc/nginx-ingress-helm-operator
   maintainers:
   - email: kubernetes@nginx.com
     name: NGINX Inc

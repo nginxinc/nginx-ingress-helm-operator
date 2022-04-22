@@ -168,6 +168,7 @@ rules:
   - watch
   - update
   - create
+# Comment out this scc block before running the bundle command if running in a non-OpenShift environment
 - apiGroups:
   - security.openshift.io
   verbs:

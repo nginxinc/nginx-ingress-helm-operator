@@ -1,4 +1,4 @@
-FROM registry.redhat.io/openshift4/ose-helm-operator:v4.10
+FROM quay.io/operator-framework/helm-operator:v1.16.0
 
 ARG VERSION
 

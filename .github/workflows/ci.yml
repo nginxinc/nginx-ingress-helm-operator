@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - 'main'
+      - main
     paths-ignore:
       - 'docs/**'
       - 'examples/**'
@@ -22,6 +22,9 @@ on:
       - 'examples/**'
       - '**.md'
 
+env:
+  platforms: "linux/amd64,linux/arm64,linux/ppc64le,linux/s390x"
+
 concurrency:
   group: ${{ github.ref_name }}-ci
   cancel-in-progress: true
@@ -36,7 +39,7 @@ jobs:
       repo_name: ${{ steps.vars.outputs.repo }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Output Variables
         id: vars
         run: |
@@ -49,15 +52,27 @@ jobs:
     needs: vars
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: RedHat Registry Login
+      - name: DockerHub Login
         uses: docker/login-action@v1
         with:
-          registry: registry.redhat.io
-          username: ${{ secrets.RH_DOCKER_USERNAME }}
-          password: ${{ secrets.RH_DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        if: github.event_name != 'pull_request'
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+        if: github.event_name != 'pull_request'
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm64,ppc64le,s390x
+        if: github.event_name != 'pull_request'
       - name: Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Docker meta
@@ -66,6 +81,7 @@ jobs:
         with:
           images: |
             nginx/nginx-ingress-operator
+            ghcr.io/nginxinc/nginx-ingress-operator
           tags: |
             type=edge
             type=ref,event=pr
@@ -76,16 +92,13 @@ jobs:
       - name: Output Variables
         id: var
         run: |
-
           version=${{ steps.meta.outputs.version }}
-          operator_version=v$version
-          # TODO: Uncomment below once tags have been created
-          # if ${{ startsWith(github.ref, 'refs/tags/') }}; then
-          #     operator_version=v$version
-          # else
-          #     tag=$(git describe --tags --abbrev=0)
-          #     operator_version=$tag-$version-${{ needs.vars.outputs.sha_short }}
-          # fi
+          if ${{ startsWith(github.ref, 'refs/tags/') }}; then
+              operator_version=v$version
+          else
+              tag=$(git describe --tags --abbrev=0)
+              operator_version=$tag-$version-${{ needs.vars.outputs.sha_short }}
+          fi
           echo "::set-output name=version::$operator_version"
       - name: Build Image
         uses: docker/build-push-action@v2
@@ -95,19 +108,18 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          load: true
-          # TODO: Uncomment the following line when we are ready to push (multi-arch doesn't work woth "load")
-          # platforms: "linux/amd64,linux/arm64,linux/ppc64le, linux/s390x"
+          platforms: ${{ github.event_name != 'pull_request' && env.platforms || '' }}
+          load: ${{ github.event_name == 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' }}
           pull: true
           build-args: |
             VERSION=${{ steps.var.outputs.version }}
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.2.1
+        uses: aquasecurity/trivy-action@0.2.3
         continue-on-error: true
         with:
           image-ref: nginx/nginx-ingress-operator:${{ steps.meta.outputs.version }}
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
+          format: 'sarif'
           output: 'trivy-results.sarif'
           ignore-unfixed: 'true'
       - name: Upload Trivy scan results to GitHub Security tab
@@ -116,7 +128,7 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
       - name: Upload Scan Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         continue-on-error: true
         with:
           name: 'trivy-results.sarif'

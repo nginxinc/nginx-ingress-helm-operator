@@ -31,7 +31,7 @@ Note: The NGINX Ingress Operator works only for NGINX Ingress Controller version
 
 1. Install the NGINX Ingress Operator. See [docs](./docs/installation.md).
    <br> NOTE: To use TransportServers as part of your NGINX Ingress Controller configuration, a GlobalConfiguration resource must be created *before* starting the Operator - [see the notes](./examples/deployment-oss-min/README.md#TransportServers)
-2. Create a default server secret on the cluster - an example yaml for this can be found in the [examples folder](https://github.com/nginxinc/nginx-ingress-operator-helm/blob/v1.0.0/examples/default-server-secret.yaml)
+2. Create a default server secret on the cluster - an example yaml for this can be found in the [examples folder](https://github.com/nginxinc/nginx-ingress-helm-operator/blob/v1.0.0/examples/default-server-secret.yaml)
 3. (If using OpenShift) Create the scc resource on the cluster by applying the scc.yaml file found in the `resources` folder of this repo:
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-operator-helm/v1.0.0/resources/scc.yaml
@@ -43,6 +43,15 @@ Note: The NGINX Ingress Operator works only for NGINX Ingress Controller version
       * Set the `controller.image.repository` and `controller.image.tag` to the appropriate values
       * Set the `controller.serviceAccount.imagePullSecretName` if applicable
     * For full configuration details see the Helm documentation [here](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration).
+
+
+## Notes: Multiple NIC Deployments
+* Please see [the NGINX Ingress Controller doumentation](https://docs.nginx.com/nginx-ingress-controller/installation/running-multiple-ingress-controllers/) for general information on running multiple NGINX Ingress Controllers in your cluster.
+* To run multiple NIC instances deployed by the NGINX Ingress Operator in your cluster in the same namespace, `rbac.create` should be set to `false`, and the ServiceAccount and ClusterRoleBinding need to be created independently of the deployments. Please note that `controller.serviceAccount.imagePullSecretName` will also be ignored in this configuration, and will need to be configured as part of the independant ServiceAccount creation.
+* The ClusterRoleBinding needs to configured to bind to the `nginx-ingress-operator-nginx-ingress-admin` ClusterRole.
+* See [RBAC example spec](../resources/rbac-example.yaml) for an example ServiceAccount and ClusterRoleBinding manifest.
+* To run multiple NIC instances deployed by the NGINX Ingress Operator in your cluster in any namespace but sharing an IngressClass, `controller.ingressClass` should be set to an empty string and the IngressClass resource needs to be created independantly of the deployments.Please note that `controller.setAsDefaultIngress` will also be ignored in this configuration, and will need to be configured as part of the independant IngressClass creation.
+* See [IngressClass example spec](../resources/ingress-class.yaml) for an example IngressClass manifest.
 
 ## Upgrades
 

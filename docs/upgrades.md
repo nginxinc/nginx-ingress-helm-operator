@@ -9,18 +9,19 @@ Release 1.0.0 includes a backward incompatible change from version 0.5.0 as we h
 2. Uninstall Go operator -> this will also remove any instances of the NginxIngressController, but not any dependent objects (ingresses, VSs, etc)
 3. Remove the nginx-ingress ingressClass `k delete ingressclass/nginx`
 4. Install new operator 
-5. Deploy common resources (scc, default server secret, ns, etc). Note: service account and ingress class should be deployed separately if deploying multiple ICs in same namespace. This is because only one of the ICs in a namespace will be assigned "ownership" of these resources.
-6. Re-create ingress controllers (note: multi IC rules) using the new Operator. Be sure to use the same configuration as the previous deployments (ingress class name, namespaces etc). They will pick up all deployed resources.
+5. Deploy common resources (scc, default server secret, ns, etc).
+**Note: Multiple NIC deployments: the RBAC resources should be deployed separately if deploying multiple ICs in same namespace. This is because only one of the ICs in a namespace will be assigned "ownership" of these resources. Similarly, the IngressClass resource needs to be created separately if deploying mutiple NIC instances with a shared IngressClass. See the [README](../README.md) for more information**
+6. Re-create ingress controllers (note: multi IC rules) using the new Operator. Be sure to use the same configuration as the previous deployments (ingress class name, namespaces etc). They will pick up all deployed dependant resources.
 
 ### 0. Upgrade the existing NIC crds
 
-Navigate [here]() and run ` kubectl apply -f crds/`
+Navigate [here](../helm-charts/nginx-ingress/) and run ` kubectl apply -f crds/`
 
 ### 1. Uninstall the existing 0.5.0 operator, the nginx ingress controller CRD, and the ingressClass
 
 Uninstall the operator using the web console - see [the OCP documentation for details](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.9/pdf/operators/OpenShift_Container_Platform-4.9-Operators-en-US.pdf). 
 
-Next uninstall the NIC CRD. This will remove any instances of the NginxIngressController, but not any dependent objects (ingresses, VSs, etc).
+Next uninstall the NIC CRD `nginxingresscontrollers.k8s.nginx.org`. This will remove any instances of the NginxIngressController, but not any dependent objects (ingresses, VSs, etc).
 
 Finally, remove the nginx-ingress ingressClass `k delete ingressclass/nginx`.
 
@@ -48,6 +49,10 @@ Uninstall the existing operator deployment:
     make undeploy
     ```
 
-### 3. Upgrade the existing ingress controller deployments
+### 3. Install the latest version of the operator
 
-Upgrade to the latest 2.2.0 Ingress Controller image - see the release notes [here](https://docs.nginx.com/nginx-ingress-controller/releases/#nginx-ingress-controller-2-2-0)
+Install the latest version of the Operator following the steps outlined in [manual installation doc](./manual-installation.md).
+
+### 3. Deploy new ingress controller deployments
+
+Use the new Nginx Ingress Operator installation to deploy Nginx Ingress Controller - see the release notes [here](https://docs.nginx.com/nginx-ingress-controller/releases/#nginx-ingress-controller-2-2-0) and a guide to the Helm configuration parameters [here](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration)
