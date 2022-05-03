@@ -37,6 +37,7 @@ jobs:
     outputs:
       sha_short: ${{ steps.vars.outputs.sha }}
       repo_name: ${{ steps.vars.outputs.repo }}
+      version: ${{ steps.vars.outputs.version }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -45,6 +46,7 @@ jobs:
         run: |
           echo "::set-output name=sha::$(echo ${GITHUB_SHA} | cut -c1-7)"
           echo "::set-output name=repo::$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2)"
+          echo "::set-output name=version::${GITHUB_REF/refs\/tags\//}"
 
   build:
     name: Build Image
@@ -92,12 +94,11 @@ jobs:
       - name: Output Variables
         id: var
         run: |
-          version=${{ steps.meta.outputs.version }}
+          version=latest
           if ${{ startsWith(github.ref, 'refs/tags/') }}; then
-              operator_version=v$version
+              operator_version=v${{ needs.vars.outputs.version }}
           else
-              tag=$(git describe --tags --abbrev=0)
-              operator_version=$tag-$version-${{ needs.vars.outputs.sha_short }}
+              operator_version=$version-${{ needs.vars.outputs.sha_short }}
           fi
           echo "::set-output name=version::$operator_version"
       - name: Build Image
