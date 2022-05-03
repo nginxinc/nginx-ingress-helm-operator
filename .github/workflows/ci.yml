@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "::set-output name=sha::$(echo ${GITHUB_SHA} | cut -c1-7)"
           echo "::set-output name=repo::$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2)"
-          echo "::set-output name=version::${GITHUB_REF/refs\/tags\//}"
+          echo "::set-output name=version::$(echo ${GITHUB_REF} | cut -d '/' -f 2)"
 
   build:
     name: Build Image
@@ -116,7 +116,7 @@ jobs:
           build-args: |
             VERSION=${{ steps.var.outputs.version }}
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.2.3
+        uses: aquasecurity/trivy-action@0.2.5
         continue-on-error: true
         with:
           image-ref: nginx/nginx-ingress-operator:${{ steps.meta.outputs.version }}
@@ -124,7 +124,7 @@ jobs:
           output: 'trivy-results.sarif'
           ignore-unfixed: 'true'
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         continue-on-error: true
         with:
           sarif_file: 'trivy-results.sarif'
@@ -145,7 +145,7 @@ jobs:
     steps:
       - name: Workflow Status
         id: check
-        uses: martialonline/workflow-status@v2
+        uses: martialonline/workflow-status@v3
       - name: Send Notification
         uses: 8398a7/action-slack@v3
         if: steps.check.outputs.status == 'failure'
