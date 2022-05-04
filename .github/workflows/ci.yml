@@ -83,7 +83,7 @@ jobs:
         with:
           images: |
             nginx/nginx-ingress-operator
-            ghcr.io/nginxinc/nginx-ingress-operator
+            ghcr.io/nginxinc/nginx-ingress-helm-operator
           tags: |
             type=edge
             type=ref,event=pr
