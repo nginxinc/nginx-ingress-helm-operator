@@ -1,4 +1,4 @@
-[![Continuous Integration](https://github.com/nginxinc/nginx-ingress-helm-operator/workflows/Continuous%20Integration/badge.svg)](https://github.com/nginxinc/nginx-ingress-helm-operator/actions) [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B5618%2Fgithub.com%2Fnginxinc%2Fnginx-ingress-helm-operator.svg?type=shield)](https://app.fossa.com/projects/custom%2B5618%2Fgithub.com%2Fnginxinc%2Fnginx-ingress-helm-operator?ref=badge_shield)
+[![Continuous Integration](https://github.com/nginxinc/nginx-ingress-helm-operator/workflows/Continuous%20Integration/badge.svg)](https://github.com/nginxinc/nginx-ingress-helm-operator/actions)
 
 # NGINX Ingress Operator
 
