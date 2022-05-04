@@ -8,14 +8,14 @@ Learn more about operators in the [Kubernetes Documentation](https://kubernetes.
 
 To install a specific version of the NGINX Ingress Controller with the operator, a specific version of the NGINX Ingress Operator is required.
 
-Up until version 0.5.0, this Operator was Go based. Version 1.0.0 marks an uncompatible upgrade as this release swtiched the Operator to being Helm-based, built from the [NGINX Ingress Controller Helm chart](http://helm.nginx.com/#nginx-ingress-controller). The configuration for the Helm chart can be seen in the [NGINX Ingress Controller documentation](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration).
+Up until version 0.5.1, this Operator was Go based. Version 1.0.0 marks an uncompatible upgrade as this release swtiched the Operator to being Helm-based, built from the [NGINX Ingress Controller Helm chart](http://helm.nginx.com/#nginx-ingress-controller). The configuration for the Helm chart can be seen in the [NGINX Ingress Controller documentation](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration).
 
 The following table shows the relation between the versions of the two projects:
 
 | NGINX Ingress Controller | NGINX Ingress Operator |
 | --- | --- |
 | 2.2.x | 1.0.0 |
-| 2.1.x | 0.5.0 |
+| 2.1.x | 0.5.1 |
 | 2.0.x | 0.4.0 |
 | 1.12.x | 0.3.0 |
 | 1.11.x | 0.2.0 |

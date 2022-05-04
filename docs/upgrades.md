@@ -1,8 +1,8 @@
-# Upgrade - 0.5.0 to 1.0.0
+# Upgrade - 0.5.1 to 1.0.0
 
-Release 1.0.0 includes a backward incompatible change from version 0.5.0 as we have moved from a Go based operator to a Helm based operator.
+Release 1.0.0 includes a backward incompatible change from version 0.5.1 as we have moved from a Go based operator to a Helm based operator.
 
-## OLM upgrade - 0.5.0 to 1.0.0
+## OLM upgrade - 0.5.1 to 1.0.0
 
 **Note: The `nginx-ingress-operator` supports `Basic Install` only - we do not support auto-updates. When you are installing the Operator using the OLM, the auto-update feature should be disabled to avoid breaking changes being auto-applied. In OpenShift, this can be done by setting the `Approval Strategy` to `Manual`. Please see the [Operator SDK docs](https://sdk.operatorframework.io/docs/advanced-topics/operator-capabilities/operator-capabilities/) for more details on the Operator Capability Levels.**
 1. Upgrade CRDs
@@ -17,7 +17,7 @@ Release 1.0.0 includes a backward incompatible change from version 0.5.0 as we h
 
 Navigate [here](../helm-charts/nginx-ingress/) and run ` kubectl apply -f crds/`
 
-### 1. Uninstall the existing 0.5.0 operator, the nginx ingress controller CRD, and the ingressClass
+### 1. Uninstall the existing 0.5.1 operator, the nginx ingress controller CRD, and the ingressClass
 
 Uninstall the operator using the web console - see [the OCP documentation for details](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.9/pdf/operators/OpenShift_Container_Platform-4.9-Operators-en-US.pdf). 
 
@@ -33,7 +33,7 @@ Install the latest version of the Operator following the steps outlined in [Open
 
 Use the new Nginx Ingress Operator installation to deploy Nginx Ingress Controller - see the release notes [here](https://docs.nginx.com/nginx-ingress-controller/releases/#nginx-ingress-controller-2-2-0) and a guide to the Helm configuration parameters [here](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration)
 
-## Manual upgrade - 0.5.0 to 1.0.0
+## Manual upgrade - 0.5.1 to 1.0.0
 
 ### 1. Deploy the new operator
 
@@ -43,7 +43,7 @@ Deploy the operator following the steps outlined in [manual installation doc](./
 
 Uninstall the existing operator deployment:
    
-1. Checkout the previous version of the nginx-ingress-operator [0.5.0](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v0.5.0).
+1. Checkout the previous version of the nginx-ingress-operator [0.5.1](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v0.5.0).
 2. Uninstall the resources by running the following command:
     ```
     make undeploy
