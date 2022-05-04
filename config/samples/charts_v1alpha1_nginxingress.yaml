@@ -63,7 +63,10 @@ spec:
       enable: true
       enableLeaderElection: true
       ingressLink: ""
-    resources: {}
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
     service:
       annotations: {}
       create: true
