@@ -138,8 +138,14 @@ metadata:
     operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
     repository: https://github.com/nginxinc/nginx-ingress-helm-operator
     support: NGINX Inc.
-  name: nginx-ingress-operator.v1.0.0
-  namespace: openshift-operators
+    createdAt: placeholder
+    operatorframework.io/suggested-namespace: nginx-ingress
+  labels:
+    operatorframework.io/arch.amd64: supported
+    operatorframework.io/arch.ppc64le: supported
+    operatorframework.io/arch.s390x: supported
+  name: nginx-ingress-operator.v0.0.0
+  namespace: placeholder
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
