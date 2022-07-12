@@ -33,6 +33,7 @@ metadata:
               },
               "enableCertManager": false,
               "enableCustomResources": true,
+              "enableExternalDNS": false,
               "enableLatencyMetrics": false,
               "enableOIDC": false,
               "enablePreviewPolicies": false,
@@ -49,7 +50,7 @@ metadata:
               "image": {
                 "pullPolicy": "IfNotPresent",
                 "repository": "nginx/nginx-ingress",
-                "tag": "2.2.0-ubi"
+                "tag": "2.3.0-ubi"
               },
               "ingressClass": "nginx",
               "initContainers": [],
@@ -141,7 +142,7 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: nginx/nginx-ingress-operator:1.0.0
+    containerImage: nginx/nginx-ingress-operator:1.1.0
     createdAt: placeholder
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
@@ -154,7 +155,7 @@ metadata:
     operatorframework.io/arch.amd64: supported
     operatorframework.io/arch.ppc64le: supported
     operatorframework.io/arch.s390x: supported
-  name: nginx-ingress-operator.v1.0.0
+  name: nginx-ingress-operator.v1.1.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -291,9 +292,7 @@ spec:
           - create
         serviceAccountName: nginx-ingress-operator-controller-manager
       deployments:
-      - label:
-          control-plane: controller-manager
-        name: nginx-ingress-operator-controller-manager
+      - name: nginx-ingress-operator-controller-manager
         spec:
           replicas: 1
           selector:
@@ -313,7 +312,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: nginx/nginx-ingress-operator:1.0.0
+                image: nginx/nginx-ingress-operator:1.1.0
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -413,4 +412,4 @@ spec:
   minKubeVersion: 1.19.0
   provider:
     name: NGINX Inc
-  version: 1.0.0
+  version: 1.1.0
