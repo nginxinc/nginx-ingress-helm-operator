@@ -135,3 +135,20 @@ rules:
   - update
   - create
   - delete
+- apiGroups:
+  - externaldns.nginx.org
+  resources:
+  - dnsendpoints
+  verbs:
+  - list
+  - watch
+  - get
+  - update
+  - create
+  - delete
+- apiGroups:
+  - externaldns.nginx.org
+  resources:
+  - dnsendpoints/status
+  verbs:
+  - update
