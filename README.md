@@ -14,6 +14,7 @@ The following table shows the relation between the versions of the two projects:
 
 | NGINX Ingress Controller | NGINX Ingress Operator |
 | --- | --- |
+| 2.3.x | 1.1.0 |
 | 2.2.x | 1.0.0 |
 | 2.1.x | 0.5.1 |
 | 2.0.x | 0.4.0 |
