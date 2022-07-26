@@ -69,7 +69,7 @@ It is possible to run the operator in your local machine. This is useful for tes
 
 ### Run Operator locally
 
-1. Have access to a Kubernetes/Openshift cluster.
+1. Have access to a Kubernetes/OpenShift cluster.
 1. Apply the IC CRD:
    ```
     make install
