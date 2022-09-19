@@ -56,7 +56,7 @@ Note: The NGINX Ingress Operator works only for NGINX Ingress Controller version
 
 ## Upgrades
 
-See [upgrade docs](./docs/upgrades)
+See [upgrade docs](./docs/upgrades.md)
 
 ## NGINX Ingress Operator Releases
 We publish NGINX Ingress Operator releases on GitHub. See our [releases page](https://github.com/nginxinc/nginx-ingress-helm-operator/releases).
