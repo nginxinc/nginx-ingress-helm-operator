@@ -146,7 +146,7 @@ metadata:
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
     operatorframework.io/suggested-namespace: nginx-ingress
-    operators.operatorframework.io/builder: operator-sdk-v1.22.2
+    operators.operatorframework.io/builder: operator-sdk-v1.23.0
     operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
     repository: https://github.com/nginxinc/nginx-ingress-helm-operator
     support: NGINX Inc.
@@ -313,7 +313,7 @@ spec:
                 - --upstream=http://127.0.0.1:8080/
                 - --logtostderr=true
                 - --v=0
-                image: gcr.io/kubebuilder/kube-rbac-proxy:v0.11.0
+                image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
                 name: kube-rbac-proxy
                 ports:
                 - containerPort: 8443
