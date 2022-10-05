@@ -24,6 +24,7 @@ spec:
     enableCustomResources: true
     enableLatencyMetrics: false
     enableOIDC: false
+    includeYear: false
     enablePreviewPolicies: false
     enableSnippets: false
     enableTLSPassthrough: false
@@ -37,7 +38,9 @@ spec:
     image:
       pullPolicy: IfNotPresent
       repository: nginx/nginx-ingress
-      tag: 2.3.0-ubi
+      tag: 2.4.0-ubi
+    lifecycle: {}
+    customConfigMap: ""
     ingressClass: nginx
     initContainers: []
     kind: deployment
@@ -105,5 +108,6 @@ spec:
     port: 9113
     scheme: http
     secret: ""
+  disableIPV6: false
   rbac:
     create: true
