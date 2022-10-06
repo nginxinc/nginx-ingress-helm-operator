@@ -52,6 +52,14 @@ rules:
   - update
   - create
 - apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - security.openshift.io
   resourceNames:
   - nginx-ingress-admin
@@ -74,6 +82,16 @@ rules:
   - create
   - patch
   - list
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - create
 - apiGroups:
   - networking.k8s.io
   resources:
