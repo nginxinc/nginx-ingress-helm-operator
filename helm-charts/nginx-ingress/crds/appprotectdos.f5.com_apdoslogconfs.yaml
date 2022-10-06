@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.4.0
+    controller-gen.kubebuilder.io/version: v0.9.2
   creationTimestamp: null
   name: apdoslogconfs.appprotectdos.f5.com
 spec:
@@ -38,13 +38,11 @@ spec:
                         - splunk
                         - arcsight
                         - user-defined
-                      default: splunk
                       type: string
                     format_string:
                       type: string
                     max_message_size:
                       pattern: ^([1-9]|[1-5][0-9]|6[0-4])k$
-                      default: 5k
                       type: string
                   type: object
                 filter:

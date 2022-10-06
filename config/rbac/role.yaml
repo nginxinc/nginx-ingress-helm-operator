@@ -168,6 +168,14 @@ rules:
   - watch
   - update
   - create
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
 # Comment out this scc block before running the bundle command if running in a non-OpenShift environment
 - apiGroups:
   - security.openshift.io
@@ -192,6 +200,16 @@ rules:
   - create
   - patch
   - list
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - create
 - apiGroups:
   - networking.k8s.io
   resources:

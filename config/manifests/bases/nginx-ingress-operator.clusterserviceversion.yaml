@@ -36,6 +36,7 @@ metadata:
               "enableExternalDNS": false,
               "enableLatencyMetrics": false,
               "enableOIDC": false,
+              "includeYear": false,
               "enablePreviewPolicies": false,
               "enableSnippets": false,
               "enableTLSPassthrough": false,
@@ -49,8 +50,10 @@ metadata:
               "image": {
                 "pullPolicy": "IfNotPresent",
                 "repository": "nginx/nginx-ingress",
-                "tag": "2.3.0-ubi"
+                "tag": "2.4.0-ubi"
               },
+              "lifecycle": {},
+              "customConfigMap": "",
               "ingressClass": "nginx",
               "initContainers": [],
               "kind": "deployment",
@@ -123,6 +126,7 @@ metadata:
               "scheme": "http",
               "secret": ""
             },
+            "disableIPV6": false,
             "rbac": {
               "create": true
             }
@@ -302,7 +306,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: nginx/nginx-ingress-operator:1.0.0
+                image: nginx/nginx-ingress-operator:1.1.0
                 livenessProbe:
                   httpGet:
                     path: /healthz
