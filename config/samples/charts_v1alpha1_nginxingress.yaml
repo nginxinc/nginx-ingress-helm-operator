@@ -38,7 +38,7 @@ spec:
     image:
       pullPolicy: IfNotPresent
       repository: nginx/nginx-ingress
-      tag: 2.4.0-ubi
+      tag: 2.4.1-ubi
     lifecycle: {}
     customConfigMap: ""
     ingressClass: nginx
