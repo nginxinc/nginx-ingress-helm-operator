@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: CI
 
 on:
   push:
@@ -30,28 +30,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
-  vars:
-    name: Get variables
-    runs-on: ubuntu-20.04
-    outputs:
-      sha_short: ${{ steps.vars.outputs.sha }}
-      repo_name: ${{ steps.vars.outputs.repo }}
-      version: ${{ steps.vars.outputs.version }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-      - name: Output Variables
-        id: vars
-        run: |
-          echo "::set-output name=sha::$(echo ${GITHUB_SHA} | cut -c1-7)"
-          echo "::set-output name=repo::$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2)"
-          echo "::set-output name=version::$(echo ${GITHUB_REF} | cut -d '/' -f 2)"
-
   build:
     name: Build Image
     runs-on: ubuntu-20.04
-    needs: vars
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -70,6 +51,13 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
         if: github.event_name != 'pull_request'
+      - name: Login to Quay.io
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+        if: github.event_name != 'pull_request'
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
         with:
@@ -77,6 +65,10 @@ jobs:
         if: github.event_name != 'pull_request'
       - name: Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - name: Output Variables
+        id: vars
+        run: |
+          echo "version=$(git describe --tags)" >> $GITHUB_OUTPUT
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
@@ -84,6 +76,7 @@ jobs:
           images: |
             nginx/nginx-ingress-operator
             ghcr.io/nginxinc/nginx-ingress-operator
+            quay.io/nginx/nginx-ingress-operator
           tags: |
             type=edge
             type=ref,event=pr
@@ -91,16 +84,13 @@ jobs:
           labels: |
             org.opencontainers.image.documentation=https://docs.nginx.com/nginx-ingress-controller
             org.opencontainers.image.vendor=NGINX Inc <kubernetes@nginx.com>
-      - name: Output Variables
-        id: var
-        run: |
-          version=latest
-          if ${{ startsWith(github.ref, 'refs/tags/') }}; then
-              operator_version=v${{ needs.vars.outputs.version }}
-          else
-              operator_version=$version-${{ needs.vars.outputs.sha_short }}
-          fi
-          echo "::set-output name=version::$operator_version"
+            name="NGINX Ingress Operator"
+            maintainer="kubernetes@nginx.com"
+            vendor="NGINX Inc"
+            version=${{ steps.vars.outputs.version }}
+            release=1
+            summary="The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers"
+            description="The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers"
       - name: Build Image
         uses: docker/build-push-action@v3
         with:
@@ -112,9 +102,8 @@ jobs:
           platforms: ${{ github.event_name != 'pull_request' && env.platforms || '' }}
           load: ${{ github.event_name == 'pull_request' }}
           push: ${{ github.event_name != 'pull_request' }}
+          no-cache: ${{ github.event_name != 'pull_request' }}
           pull: true
-          build-args: |
-            VERSION=${{ steps.var.outputs.version }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.8.0
         continue-on-error: true
@@ -135,52 +124,3 @@ jobs:
           name: 'trivy-results.sarif'
           path: 'trivy-results.sarif'
         if: always()
-
-
-  notify:
-    name: Notify
-    runs-on: ubuntu-20.04
-    needs: [vars, build]
-    if: always() && github.ref == 'refs/heads/main'
-    steps:
-      - name: Workflow Status
-        id: check
-        uses: martialonline/workflow-status@v3
-      - name: Send Notification
-        uses: 8398a7/action-slack@v3
-        if: steps.check.outputs.status == 'failure'
-        with:
-          status: custom
-          custom_payload: |
-            {
-              username: 'Github',
-              icon_emoji: ':octocat:',
-              mention: 'channel',
-              attachments: [{
-                title: '${{ needs.vars.outputs.repo_name }} ${{ github.workflow }} pipeline has failed',
-                color: '${{ steps.check.outputs.status }}' == 'failure' ? 'danger' : 'warning',
-                fields: [{
-                  title: 'Commit Hash',
-                  value: '${{ needs.vars.outputs.sha_short }}',
-                  short: true
-                },
-                {
-                  title: 'Author',
-                  value: '${{ github.actor }}',
-                  short: true
-                },
-                {
-                  title: 'Commit Message',
-                  value: `${{ github.event.head_commit.message }}`,
-                  short: false
-                },
-                {
-                  title: 'Pipeline URL',
-                  value: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-                  short: false
-                }]
-              }]
-            }
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
