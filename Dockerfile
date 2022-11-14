@@ -1,4 +1,4 @@
-FROM quay.io/operator-framework/helm-operator:v1.25.0
+FROM quay.io/operator-framework/helm-operator:v1.25.1
 
 ARG VERSION
 
@@ -16,3 +16,8 @@ LABEL name="NGINX Ingress Operator" \
       release="1" \
       summary="The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers" \
       description="The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers"
+
+# hack to update packages with CVEs
+USER root
+RUN microdnf --nodocs upgrade -y libcom_err libxml2
+USER 1001
