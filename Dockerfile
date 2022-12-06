@@ -1,4 +1,4 @@
-FROM quay.io/operator-framework/helm-operator:v1.25.2
+FROM quay.io/operator-framework/helm-operator:v1.25.3
 
 ARG VERSION
 
