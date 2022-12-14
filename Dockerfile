@@ -6,8 +6,3 @@ COPY helm-charts  ${HOME}/helm-charts
 WORKDIR ${HOME}
 
 COPY LICENSE /licenses/
-
-# hack to update packages with CVEs
-USER root
-RUN microdnf --nodocs upgrade -y libcom_err libxml2
-USER 1001
