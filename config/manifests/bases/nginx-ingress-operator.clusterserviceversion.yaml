@@ -13,6 +13,7 @@ metadata:
           "spec": {
             "controller": {
               "affinity": {},
+              "annotations": {},
               "appprotect": {
                 "enable": false
               },
@@ -23,23 +24,34 @@ metadata:
                 "maxWorkers": 0,
                 "memory": 0
               },
+              "autoscaling": {
+                "annotations": {},
+                "enabled": false,
+                "maxReplicas": 3,
+                "minReplicas": 1,
+                "targetCPUUtilizationPercentage": 50,
+                "targetMemoryUtilizationPercentage": 50
+              },
               "config": {
                 "annotations": {},
                 "entries": {}
               },
+              "customConfigMap": "",
               "customPorts": [],
               "defaultTLS": {
-                "secret": null
+                "secret": "nginx-ingress/default-server-secret"
               },
+              "disableIPV6": false,
+              "dnsPolicy": "ClusterFirst",
               "enableCertManager": false,
               "enableCustomResources": true,
               "enableExternalDNS": false,
               "enableLatencyMetrics": false,
               "enableOIDC": false,
-              "includeYear": false,
               "enablePreviewPolicies": false,
               "enableSnippets": false,
               "enableTLSPassthrough": false,
+              "extraContainers": [],
               "globalConfiguration": {
                 "create": false,
                 "spec": {}
@@ -50,14 +62,15 @@ metadata:
               "image": {
                 "pullPolicy": "IfNotPresent",
                 "repository": "nginx/nginx-ingress",
-                "tag": "2.4.1-ubi"
+                "tag": "3.0.1-ubi"
               },
-              "lifecycle": {},
-              "customConfigMap": "",
+              "includeYear": false,
               "ingressClass": "nginx",
               "initContainers": [],
               "kind": "deployment",
+              "lifecycle": {},
               "logLevel": 1,
+              "minReadySeconds": 0,
               "nginxDebug": false,
               "nginxReloadTimeout": 60000,
               "nginxStatus": {
@@ -66,14 +79,13 @@ metadata:
                 "port": 8080
               },
               "nginxplus": false,
-              "nodeSelector": {},
               "pod": {
                 "annotations": {},
                 "extraLabels": {}
               },
-              "priorityClassName": null,
               "readyStatus": {
                 "enable": true,
+                "initialDelaySeconds": 0,
                 "port": 8081
               },
               "replicaCount": 1,
@@ -83,7 +95,12 @@ metadata:
                 "enableLeaderElection": true,
                 "ingressLink": ""
               },
-              "resources": {},
+              "resources": {
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "128Mi"
+                }
+              },
               "service": {
                 "annotations": {},
                 "create": true,
@@ -93,32 +110,44 @@ metadata:
                 "extraLabels": {},
                 "httpPort": {
                   "enable": true,
-                  "nodePort": "",
                   "port": 80,
                   "targetPort": 80
                 },
                 "httpsPort": {
                   "enable": true,
-                  "nodePort": "",
                   "port": 443,
                   "targetPort": 443
                 },
                 "loadBalancerIP": "",
                 "loadBalancerSourceRanges": [],
-                "type": "NodePort"
+                "type": "LoadBalancer"
               },
               "serviceAccount": {
+                "annotations": {},
                 "imagePullSecretName": ""
               },
+              "serviceMonitor": {
+                "create": false,
+                "endpoints": [],
+                "labels": {},
+                "selectorMatchLabels": {}
+              },
               "setAsDefaultIngress": false,
+              "strategy": {},
               "terminationGracePeriodSeconds": 30,
               "tolerations": [],
               "volumeMounts": [],
               "volumes": [],
               "watchNamespace": "",
+              "watchNamespaceLabel": "",
+              "watchSecretNamespace": "",
               "wildcardTLS": {
                 "secret": null
               }
+            },
+            "nginxServiceMesh": {
+              "enable": false,
+              "enableEgress": false
             },
             "prometheus": {
               "create": true,
@@ -126,9 +155,14 @@ metadata:
               "scheme": "http",
               "secret": ""
             },
-            "disableIPV6": false,
             "rbac": {
               "create": true
+            },
+            "serviceInsight": {
+              "create": false,
+              "port": 9114,
+              "scheme": "http",
+              "secret": ""
             }
           }
         }
@@ -408,7 +442,7 @@ spec:
   - email: kubernetes@nginx.com
     name: NGINX Inc
   maturity: alpha
-  minKubeVersion: 1.19.0
+  minKubeVersion: 1.21.0
   provider:
     name: NGINX Inc
   version: 1.2.1
