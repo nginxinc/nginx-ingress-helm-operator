@@ -9,5 +9,5 @@ COPY LICENSE /licenses/
 
 # hack to update packages with CVEs
 USER root
-RUN microdnf --nodocs upgrade -y libtasn1 sqlite-libs systemd-libs
+RUN microdnf --nodocs upgrade -y libtasn1 sqlite-libs systemd-libs libxml2
 USER 1001
