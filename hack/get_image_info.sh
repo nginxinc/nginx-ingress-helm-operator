@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# test
+
 image=$1
 version=$2
 
