@@ -9,5 +9,5 @@ COPY LICENSE /licenses/
 
 # hack to update packages with CVEs
 USER root
-RUN microdnf --nodocs upgrade -y libxml2
+RUN microdnf --nodocs upgrade -y libxml2 libksba
 USER 1001
