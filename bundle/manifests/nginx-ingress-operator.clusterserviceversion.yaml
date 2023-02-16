@@ -62,7 +62,7 @@ metadata:
               "image": {
                 "pullPolicy": "IfNotPresent",
                 "repository": "nginx/nginx-ingress",
-                "tag": "3.0.1-ubi"
+                "tag": "3.0.2-ubi"
               },
               "includeYear": false,
               "ingressClass": "nginx",
@@ -170,12 +170,12 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: nginx/nginx-ingress-operator:1.3.0
-    createdAt: "2023-01-26T14:28:12Z"
+    containerImage: nginx/nginx-ingress-operator:1.3.1
+    createdAt: "2023-02-17T11:02:31Z"
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
     operatorframework.io/suggested-namespace: nginx-ingress
-    operators.operatorframework.io/builder: operator-sdk-v1.26.0
+    operators.operatorframework.io/builder: operator-sdk-v1.27.0
     operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
     repository: https://github.com/nginxinc/nginx-ingress-helm-operator
     support: NGINX Inc.
@@ -184,7 +184,7 @@ metadata:
     operatorframework.io/arch.arm64: supported
     operatorframework.io/arch.ppc64le: supported
     operatorframework.io/arch.s390x: supported
-  name: nginx-ingress-operator.v1.3.0
+  name: nginx-ingress-operator.v1.3.1
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -388,7 +388,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: nginx/nginx-ingress-operator:1.3.0
+                image: nginx/nginx-ingress-operator:1.3.1
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -479,4 +479,4 @@ spec:
   minKubeVersion: 1.21.0
   provider:
     name: NGINX Inc
-  version: 1.3.0
+  version: 1.3.1
