@@ -62,7 +62,7 @@ metadata:
               "image": {
                 "pullPolicy": "IfNotPresent",
                 "repository": "nginx/nginx-ingress",
-                "tag": "3.0.1-ubi"
+                "tag": "3.0.2-ubi"
               },
               "includeYear": false,
               "ingressClass": "nginx",
