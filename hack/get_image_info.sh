@@ -8,11 +8,14 @@ kube_image_version=v0.8.0
 
 token="$(curl 'https://auth.docker.io/token?service=registry.docker.io&scope=repository:'${image}':pull' 2>/dev/null | jq -r '.token')"
 
-image_digest=$(curl -sSfL -I -H "Authorization: Bearer ${token}" -H "Accept: application/vnd.docker.distribution.manifest.list.v2+json" "https://index.docker.io/v2/${image}/manifests/${version}" | awk 'BEGIN {FS=": "}/^docker-content-digest/{gsub(/"/, "", $2); print $2}')
+response=$(curl -sSfL -w '%{header_json}' -H "Authorization: Bearer ${token}" -H "Accept: application/vnd.oci.image.index.v1+json" "https://index.docker.io/v2/${image}/manifests/${version}" | jq -s)
 
-digest="$(curl -sSfL -H "Authorization: Bearer ${token}" -H "Accept: application/vnd.docker.distribution.manifest.v2+json" "https://index.docker.io/v2/${image}/manifests/${version}" | jq -r '.config.digest')"
+image_digest=$(jq -r '.[1]."docker-content-digest"[]' <<<$response)
+manifest_digest=$(jq -r '.[0].manifests[0].digest' <<<$response)
 
-created=$(curl -sSfL -H "Accept: application/vnd.docker.distribution.manifest.v2+json" -H "Authorization: Bearer ${token}" "https://index.docker.io/v2/${image}/blobs/${digest}" | jq -r '.config.Labels."org.opencontainers.image.created"')
+digest="$(curl -sSfL -H "Authorization: Bearer ${token}" -H "Accept: application/vnd.oci.image.manifest.v1+json" "https://index.docker.io/v2/${image}/manifests/${manifest_digest}" | jq -r '.config.digest')"
+
+created=$(curl -sSfL -H "Accept: application/vnd.oci.image.config.v1+json" -H "Authorization: Bearer ${token}" "https://index.docker.io/v2/${image}/blobs/${digest}" | jq -r '.config.Labels."org.opencontainers.image.created"')
 
 proxy="./config/default/manager_auth_proxy_patch.yaml"
 kube_proxy=$(yq e '.spec.template.spec.containers.[0].image' $proxy)
