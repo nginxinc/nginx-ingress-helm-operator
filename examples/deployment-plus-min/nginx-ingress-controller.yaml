@@ -11,7 +11,7 @@ spec:
     image:
       pullPolicy: IfNotPresent
       repository: nginx/nginx-ingress
-      tag: 2.4.1-ubi
+      tag: 3.0.2-ubi
     ingressClass: nginx
     kind: deployment
     nginxplus: true
