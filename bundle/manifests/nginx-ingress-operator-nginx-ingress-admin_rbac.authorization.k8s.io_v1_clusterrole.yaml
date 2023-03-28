@@ -25,17 +25,17 @@ rules:
   - watch
   - list
 - apiGroups:
-  - ""
+  - discovery.k8s.io
   resources:
-  - services
+  - endpointslices
   verbs:
   - get
   - list
   - watch
 - apiGroups:
-  - discovery.k8s.io
+  - ""
   resources:
-  - endpointslices
+  - services
   verbs:
   - get
   - list
@@ -61,11 +61,12 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - namespaces
+  - pods
   verbs:
   - get
   - list
   - watch
+  - update
 - apiGroups:
   - security.openshift.io
   resourceNames:
@@ -77,8 +78,9 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - pods
+  - namespaces
   verbs:
+  - get
   - list
   - watch
 - apiGroups:
