@@ -123,12 +123,12 @@ metadata:
 rules:
 - apiGroups: 
   - appprotect.f5.com
-  resources: 
+  resources:
   - appolicies
   - aplogconfs
   - apusersigs
-  verbs: 
-  - get 
+  verbs:
+  - get
   - watch
   - list
 - apiGroups:
@@ -142,17 +142,17 @@ rules:
     - watch
     - list
 - apiGroups:
-  - ""
+  - discovery.k8s.io
   resources:
-  - services
+  - endpointslices
   verbs:
   - get
   - list
   - watch
 - apiGroups:
-  - discovery.k8s.io
+  - ""
   resources:
-  - endpointslices
+  - services
   verbs:
   - get
   - list
@@ -178,11 +178,12 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - namespaces
+  - pods
   verbs:
   - get
   - list
   - watch
+  - update
 # Comment out this scc block before running the bundle command if running in a non-OpenShift environment
 - apiGroups:
   - security.openshift.io
@@ -195,8 +196,9 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - pods
+  - namespaces
   verbs:
+  - get
   - list
   - watch
 - apiGroups:
