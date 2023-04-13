@@ -35,10 +35,10 @@ Note: The NGINX Ingress Operator works only for NGINX Ingress Controller version
 
 1. Install the NGINX Ingress Operator. See [docs](./docs/installation.md).
    <br> NOTE: To use TransportServers as part of your NGINX Ingress Controller configuration, a GlobalConfiguration resource must be created *before* starting the Operator - [see the notes](./examples/deployment-oss-min/README.md#TransportServers)
-2. Create a default server secret on the cluster - an example yaml for this can be found in the [examples folder](https://github.com/nginxinc/nginx-ingress-helm-operator/blob/v1.4.0/examples/default-server-secret.yaml)
+2. Creating the default-server-secret.yaml is optional and it is recommended that users provide their own certificate. An example yaml for this can be found in the [examples folder](https://github.com/nginxinc/nginx-ingress-helm-operator/blob/main/examples/default-server-secret.yaml)
 3. (If using OpenShift) Create the scc resource on the cluster by applying the scc.yaml file found in the `resources` folder of this repo:
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v1.4.0/resources/scc.yaml
+  kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/main/resources/scc.yaml
   ```
 4. Deploy a new NGINX Ingress Controller using the [NginxIngress](./config/samples/charts_v1alpha1_nginxingress.yaml) Custom Resource:
     * Use the name of the default server secret created above for `controller.defaultTLS.secret` field (needs to be in the form `namespace/name`)
