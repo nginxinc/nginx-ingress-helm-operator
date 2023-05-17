@@ -17,6 +17,9 @@ concurrency:
   group: ${{ github.ref_name }}-ci
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build Image
