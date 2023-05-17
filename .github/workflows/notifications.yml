@@ -5,6 +5,7 @@ on:
     branches: main
     workflows:
       - "CI"
+      - "OpenSSF Scorecards"
     types:
       - completed
 

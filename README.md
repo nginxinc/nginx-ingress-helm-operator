@@ -1,4 +1,4 @@
-[![Continuous Integration](https://github.com/nginxinc/nginx-ingress-helm-operator/workflows/Continuous%20Integration/badge.svg)](https://github.com/nginxinc/nginx-ingress-helm-operator/actions)
+[![Continuous Integration](https://github.com/nginxinc/nginx-ingress-helm-operator/workflows/Continuous%20Integration/badge.svg)](https://github.com/nginxinc/nginx-ingress-helm-operator/actions) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/nginxinc/nginx-ingress-helm-operator/badge)](https://api.securityscorecards.dev/projects/github.com/nginxinc/nginx-ingress-helm-operator)
 
 # NGINX Ingress Operator
 
