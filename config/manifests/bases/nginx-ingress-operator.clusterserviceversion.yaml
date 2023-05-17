@@ -176,7 +176,7 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: nginx/nginx-ingress-operator:1.4.0
+    containerImage: nginx/nginx-ingress-operator:1.4.1
     createdAt: placeholder
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
@@ -345,7 +345,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: nginx/nginx-ingress-operator:1.4.0
+                image: nginx/nginx-ingress-operator:1.4.1
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -451,4 +451,4 @@ spec:
   minKubeVersion: 1.21.0
   provider:
     name: NGINX Inc
-  version: 1.4.0
+  version: 1.4.1
