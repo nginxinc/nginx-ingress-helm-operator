@@ -1,0 +1,18 @@
+enhancement:
+  - head-branch: ['^feature/', '^feat/', '^enhancement/', '^enh/']
+
+bug:
+  - head-branch: ['^fix/', '^bug/']
+
+chore:
+  - head-branch: ['^chore/']
+
+tests:
+  - head-branch: ['^tests/', '^test/']
+
+documentation:
+  - head-branch: ['^docs/', '^doc/']
+  - changed-files: '**/*.md'
+
+dependencies:
+  - head-branch: ['^deps/', '^dep/', '^dependabot/']
