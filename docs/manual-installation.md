@@ -8,17 +8,17 @@ This will deploy the operator in the `nginx-ingress-operator-system` namespace.
     ```
     git clone https://github.com/nginxinc/nginx-ingress-helm-operator/
     cd nginx-ingress-helm-operator/
-    git checkout v1.4.0
+    git checkout v1.4.1
     ```
 
    2. `OpenShift` To deploy the Operator and associated resources to an OpenShift environment, run:
     ```
-    make deploy IMG=nginx/nginx-ingress-operator:1.4.0
+    make deploy IMG=nginx/nginx-ingress-operator:1.4.1
     ```
 
    3. Alternatively, to deploy the Operator and associated resources to all other environments:
     ```
-    make deploy IMG=nginx/nginx-ingress-operator:1.4.0
+    make deploy IMG=nginx/nginx-ingress-operator:1.4.1
     ```
 
 2. Check that the Operator is running:
@@ -33,4 +33,4 @@ This will deploy the operator in the `nginx-ingress-operator-system` namespace.
 
 In order to deploy NGINX Ingress Controller instances into OpenShift environments, a new SCC is required to be created on the cluster which will be used to bind the specific required capabilities to the NGINX Ingress service account(s). To do so, please run the following command (assuming you are logged in with administrator access to the cluster):
 
-`kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v1.4.0/resources/scc.yaml`
+`kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v1.4.1/resources/scc.yaml`

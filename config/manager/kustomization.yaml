@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: nginx/nginx-ingress-operator
-  newTag: 1.4.0
+  newTag: 1.4.1
