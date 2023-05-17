@@ -9,6 +9,9 @@ on:
     types:
       - completed
 
+permissions:
+  contents: read
+
 jobs:
   on-failure:
     runs-on: ubuntu-22.04
