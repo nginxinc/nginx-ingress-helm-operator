@@ -7,11 +7,11 @@ This installation method is the recommended way for OpenShift users. **Note**: O
 The NGINX Ingress Operator is a [RedHat certified Operator](https://connect.redhat.com/en/partner-with-us/red-hat-openshift-operator-certification).
 
 1. In the OpenShift dashboard, click `Operators` > `Operator Hub` in the left menu and use the search box to type `nginx ingress`:
-![alt text](./images/openshift1.png "Operators")
+   ![alt text](./images/openshift1.png "Operators")
 1. Click the `NGINX Ingress Operator` and click `Install`:
-![alt text](./images/openshift2.png "NGINX Ingress Operator")
+   ![alt text](./images/openshift2.png "NGINX Ingress Operator")
 1. Click `Subscribe`:
-![alt text](./images/openshift3.png "NGINX Ingress Operator Install")
+   ![alt text](./images/openshift3.png "NGINX Ingress Operator Install")
 
 OpenShift will install the NGINX Ingress Operator:
 
@@ -21,10 +21,10 @@ Additional steps:
 
 In order to deploy NGINX Ingress Controller instances into OpenShift environments, a new SCC is required to be created on the cluster which will be used to bind the specific required capabilities to the NGINX Ingress service account(s). To do so for NIC deployments, please run the following command (assuming you are logged in with administrator access to the cluster):
 
-`kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v1.4.1/resources/scc.yaml`
+`kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v1.4.2/resources/scc.yaml`
 
 Alternatively, to create an SCC for NIC daemonsets, please run this command:
 
-`kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v1.3.1/resources/scc-daemonset.yaml`
+`kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v1.4.2/resources/scc-daemonset.yaml`
 
 You can now deploy the NGINX Ingress Controller instances.
