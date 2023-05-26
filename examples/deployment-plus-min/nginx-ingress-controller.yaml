@@ -6,12 +6,12 @@ spec:
   # Default values copied from <project_dir>/helm-charts/nginx-ingress/values.yaml
   controller:
     defaultTLS:
-      secret: nginx-ingress/default-server-secret
+      secret: ""
     enableCustomResources: true
     image:
       pullPolicy: IfNotPresent
       repository: nginx/nginx-ingress
-      tag: 2.4.1-ubi
+      tag: 3.1.1-ubi
     ingressClass: nginx
     kind: deployment
     nginxplus: true

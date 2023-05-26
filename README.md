@@ -1,4 +1,4 @@
-[![Continuous Integration](https://github.com/nginxinc/nginx-ingress-helm-operator/workflows/Continuous%20Integration/badge.svg)](https://github.com/nginxinc/nginx-ingress-helm-operator/actions)
+[![Continuous Integration](https://github.com/nginxinc/nginx-ingress-helm-operator/workflows/Continuous%20Integration/badge.svg)](https://github.com/nginxinc/nginx-ingress-helm-operator/actions) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/nginxinc/nginx-ingress-helm-operator/badge)](https://api.securityscorecards.dev/projects/github.com/nginxinc/nginx-ingress-helm-operator)
 
 # NGINX Ingress Operator
 
@@ -13,20 +13,21 @@ Up until version 0.5.1, this Operator was Go based. Version 1.0.0 marks an incom
 The following table shows the relation between the versions of the two projects:
 
 | NGINX Ingress Controller | NGINX Ingress Operator |
-| --- | --- |
-| 3.0.x | 1.3.1 |
-| 2.4.x | 1.2.1 |
-| 2.3.x | 1.1.0 |
-| 2.2.x | 1.0.0 |
-| 2.1.x | 0.5.1 |
-| 2.0.x | 0.4.0 |
-| 1.12.x | 0.3.0 |
-| 1.11.x | 0.2.0 |
-| 1.10.x | 0.1.0 |
-| 1.9.x | 0.0.7 |
-| 1.8.x | 0.0.6 |
-| 1.7.x | 0.0.4 |
-| < 1.7.0 | N/A |
+|--------------------------|------------------------|
+| 3.1.x                    | 1.4.1                  |
+| 3.0.x                    | 1.3.1                  |
+| 2.4.x                    | 1.2.1                  |
+| 2.3.x                    | 1.1.0                  |
+| 2.2.x                    | 1.0.0                  |
+| 2.1.x                    | 0.5.1                  |
+| 2.0.x                    | 0.4.0                  |
+| 1.12.x                   | 0.3.0                  |
+| 1.11.x                   | 0.2.0                  |
+| 1.10.x                   | 0.1.0                  |
+| 1.9.x                    | 0.0.7                  |
+| 1.8.x                    | 0.0.6                  |
+| 1.7.x                    | 0.0.4                  |
+| < 1.7.0                  | N/A                    |
 
 Note: The NGINX Ingress Operator works only for NGINX Ingress Controller versions after `1.7.0`.
 
@@ -34,10 +35,10 @@ Note: The NGINX Ingress Operator works only for NGINX Ingress Controller version
 
 1. Install the NGINX Ingress Operator. See [docs](./docs/installation.md).
    <br> NOTE: To use TransportServers as part of your NGINX Ingress Controller configuration, a GlobalConfiguration resource must be created *before* starting the Operator - [see the notes](./examples/deployment-oss-min/README.md#TransportServers)
-2. Create a default server secret on the cluster - an example yaml for this can be found in the [examples folder](https://github.com/nginxinc/nginx-ingress-helm-operator/blob/v1.3.1/examples/default-server-secret.yaml)
+2. Creating the default-server-secret.yaml is optional and it is recommended that users provide their own certificate. An example yaml for this can be found in the [examples folder](https://github.com/nginxinc/nginx-ingress-helm-operator/blob/main/examples/default-server-secret.yaml)
 3. (If using OpenShift) Create the scc resource on the cluster by applying the scc.yaml file found in the `resources` folder of this repo:
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v1.3.1/resources/scc.yaml
+  kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/main/resources/scc.yaml
   ```
 4. Deploy a new NGINX Ingress Controller using the [NginxIngress](./config/samples/charts_v1alpha1_nginxingress.yaml) Custom Resource:
     * Use the name of the default server secret created above for `controller.defaultTLS.secret` field (needs to be in the form `namespace/name`)
@@ -63,7 +64,7 @@ See [upgrade docs](./docs/upgrades.md)
 ## NGINX Ingress Operator Releases
 We publish NGINX Ingress Operator releases on GitHub. See our [releases page](https://github.com/nginxinc/nginx-ingress-helm-operator/releases).
 
-The latest stable release is [1.3.1](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v1.3.1). For production use, we recommend that you choose the latest stable release.
+The latest stable release is [1.4.1](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v1.4.1). For production use, we recommend that you choose the latest stable release.
 
 ## Development
 

@@ -25,7 +25,7 @@ spec:
     customPorts: []
     image:
       repository: nginx/nginx-ingress
-      tag: "3.0.2-ubi"
+      tag: "3.1.1-ubi"
       # digest: "sha256:CHANGEME"
       pullPolicy: IfNotPresent
     lifecycle: {}
@@ -34,10 +34,14 @@ spec:
       # name: nginx-config
       annotations: {}
       entries: {}
+    ## The secret with a TLS certificate and key for the default HTTPS server.
+    ## The value must follow the following format: `<namespace>/<name>`.
+    ## Note: Alternatively, omitting the default server secret completely will configure NGINX to reject TLS connections to the default server.
+    ## Format: <namespace>/<secret_name>
     defaultTLS:
-      secret: "nginx-ingress/default-server-secret"
+      secret: ""
     wildcardTLS:
-      secret: 
+      secret:
     # nodeSelector: {}
     terminationGracePeriodSeconds: 30
     autoscaling:
@@ -57,6 +61,10 @@ spec:
     tolerations: []
     affinity: {}
     # topologySpreadConstraints: {}
+    ## The additional environment variables to be set on the Ingress Controller pods.
+    env: []
+    # - name: MY_VAR
+    #   value: myvalue
     volumes: []
     # - name: extra-conf
     #   configMap:
@@ -70,6 +78,17 @@ spec:
     #   image: busybox:1.34
     #   command: ['sh', '-c', 'echo this is initial setup!']
     minReadySeconds: 0
+    ## Pod disruption budget for the Ingress Controller pods.
+    podDisruptionBudget:
+      ## Enables PodDisruptionBudget.
+      enabled: false
+      ## The annotations of the Ingress Controller pod disruption budget.
+      annotations: {}
+      ## The number of Ingress Controller pods that should be available. This is a mutually exclusive setting with "maxUnavailable".
+      # minAvailable: 1
+      ## The number of Ingress Controller pods that can be unavailable. This is a mutually exclusive setting with "minAvailable".
+      # maxUnavailable: 1
+
     strategy: {}
     extraContainers: []
     # - name: container
@@ -158,6 +177,8 @@ spec:
       initialDelaySeconds: 0
     enableLatencyMetrics: false
     disableIPV6: false
+  ## Configure root filesystem as read-only and add volumes for temporary data.
+  readOnlyRootFilesystem: false
   rbac:
     create: true
   prometheus:

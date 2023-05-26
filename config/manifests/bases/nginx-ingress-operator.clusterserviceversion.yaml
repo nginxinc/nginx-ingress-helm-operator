@@ -12,88 +12,50 @@ metadata:
           },
           "spec": {
             "controller": {
-              "affinity": {},
+              "kind": "deployment",
               "annotations": {},
+              "nginxplus": false,
+              "nginxReloadTimeout": 60000,
               "appprotect": {
                 "enable": false
               },
               "appprotectdos": {
-                "debug": false,
                 "enable": false,
-                "maxDaemons": 0,
+                "debug": false,
                 "maxWorkers": 0,
+                "maxDaemons": 0,
                 "memory": 0
               },
-              "autoscaling": {
-                "annotations": {},
-                "enabled": false,
-                "maxReplicas": 3,
-                "minReplicas": 1,
-                "targetCPUUtilizationPercentage": 50,
-                "targetMemoryUtilizationPercentage": 50
+              "hostNetwork": false,
+              "dnsPolicy": "ClusterFirst",
+              "nginxDebug": false,
+              "logLevel": 1,
+              "customPorts": [],
+              "image": {
+                "repository": "nginx/nginx-ingress",
+                "tag": "3.1.0-ubi",
+                "pullPolicy": "IfNotPresent"
               },
+              "lifecycle": {},
+              "customConfigMap": "",
               "config": {
                 "annotations": {},
                 "entries": {}
               },
-              "customConfigMap": "",
-              "customPorts": [],
               "defaultTLS": {
-                "secret": "nginx-ingress/default-server-secret"
+                "secret": ""
               },
-              "disableIPV6": false,
-              "dnsPolicy": "ClusterFirst",
-              "enableCertManager": false,
-              "enableCustomResources": true,
-              "enableExternalDNS": false,
-              "enableLatencyMetrics": false,
-              "enableOIDC": false,
-              "enablePreviewPolicies": false,
-              "enableSnippets": false,
-              "enableTLSPassthrough": false,
-              "extraContainers": [],
-              "globalConfiguration": {
-                "create": false,
-                "spec": {}
+              "wildcardTLS": {
+                "secret": null
               },
-              "healthStatus": false,
-              "healthStatusURI": "/nginx-health",
-              "hostNetwork": false,
-              "image": {
-                "pullPolicy": "IfNotPresent",
-                "repository": "nginx/nginx-ingress",
-                "tag": "3.0.2-ubi"
-              },
-              "includeYear": false,
-              "ingressClass": "nginx",
-              "initContainers": [],
-              "kind": "deployment",
-              "lifecycle": {},
-              "logLevel": 1,
-              "minReadySeconds": 0,
-              "nginxDebug": false,
-              "nginxReloadTimeout": 60000,
-              "nginxStatus": {
-                "allowCidrs": "127.0.0.1",
-                "enable": true,
-                "port": 8080
-              },
-              "nginxplus": false,
-              "pod": {
+              "terminationGracePeriodSeconds": 30,
+              "autoscaling": {
+                "enabled": false,
                 "annotations": {},
-                "extraLabels": {}
-              },
-              "readyStatus": {
-                "enable": true,
-                "initialDelaySeconds": 0,
-                "port": 8081
-              },
-              "replicaCount": 1,
-              "reportIngressStatus": {
-                "annotations": {},
-                "enable": true,
-                "enableLeaderElection": true,
-                "ingressLink": ""
+                "minReplicas": 1,
+                "maxReplicas": 3,
+                "targetCPUUtilizationPercentage": 50,
+                "targetMemoryUtilizationPercentage": 50
               },
               "resources": {
                 "requests": {
@@ -101,13 +63,53 @@ metadata:
                   "memory": "128Mi"
                 }
               },
+              "tolerations": [],
+              "affinity": {},
+              "env": [],
+              "volumes": [],
+              "volumeMounts": [],
+              "initContainers": [],
+              "minReadySeconds": 0,
+              "podDisruptionBudget": {
+                "enabled": false,
+                "annotations": {}
+              },
+              "strategy": {},
+              "extraContainers": [],
+              "replicaCount": 1,
+              "ingressClass": "nginx",
+              "setAsDefaultIngress": false,
+              "watchNamespace": "",
+              "watchNamespaceLabel": "",
+              "watchSecretNamespace": "",
+              "enableCustomResources": true,
+              "enablePreviewPolicies": false,
+              "enableOIDC": false,
+              "includeYear": false,
+              "enableTLSPassthrough": false,
+              "enableCertManager": false,
+              "enableExternalDNS": false,
+              "globalConfiguration": {
+                "create": false,
+                "spec": {}
+              },
+              "enableSnippets": false,
+              "healthStatus": false,
+              "healthStatusURI": "/nginx-health",
+              "nginxStatus": {
+                "enable": true,
+                "port": 8080,
+                "allowCidrs": "127.0.0.1"
+              },
               "service": {
-                "annotations": {},
                 "create": true,
-                "customPorts": [],
-                "externalIPs": [],
+                "type": "LoadBalancer",
                 "externalTrafficPolicy": "Local",
+                "annotations": {},
                 "extraLabels": {},
+                "loadBalancerIP": "",
+                "externalIPs": [],
+                "loadBalancerSourceRanges": [],
                 "httpPort": {
                   "enable": true,
                   "port": 80,
@@ -118,9 +120,7 @@ metadata:
                   "port": 443,
                   "targetPort": 443
                 },
-                "loadBalancerIP": "",
-                "loadBalancerSourceRanges": [],
-                "type": "LoadBalancer"
+                "customPorts": []
               },
               "serviceAccount": {
                 "annotations": {},
@@ -128,41 +128,47 @@ metadata:
               },
               "serviceMonitor": {
                 "create": false,
-                "endpoints": [],
                 "labels": {},
-                "selectorMatchLabels": {}
+                "selectorMatchLabels": {},
+                "endpoints": []
               },
-              "setAsDefaultIngress": false,
-              "strategy": {},
-              "terminationGracePeriodSeconds": 30,
-              "tolerations": [],
-              "volumeMounts": [],
-              "volumes": [],
-              "watchNamespace": "",
-              "watchNamespaceLabel": "",
-              "watchSecretNamespace": "",
-              "wildcardTLS": {
-                "secret": null
-              }
+              "reportIngressStatus": {
+                "enable": true,
+                "ingressLink": "",
+                "enableLeaderElection": true,
+                "annotations": {}
+              },
+              "pod": {
+                "annotations": {},
+                "extraLabels": {}
+              },
+              "readyStatus": {
+                "enable": true,
+                "port": 8081,
+                "initialDelaySeconds": 0
+              },
+              "enableLatencyMetrics": false,
+              "disableIPV6": false
             },
-            "nginxServiceMesh": {
-              "enable": false,
-              "enableEgress": false
+            "readOnlyRootFilesystem": false,
+            "rbac": {
+              "create": true
             },
             "prometheus": {
               "create": true,
               "port": 9113,
-              "scheme": "http",
-              "secret": ""
-            },
-            "rbac": {
-              "create": true
+              "secret": "",
+              "scheme": "http"
             },
             "serviceInsight": {
               "create": false,
               "port": 9114,
-              "scheme": "http",
-              "secret": ""
+              "secret": "",
+              "scheme": "http"
+            },
+            "nginxServiceMesh": {
+              "enable": false,
+              "enableEgress": false
             }
           }
         }
@@ -170,7 +176,7 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: nginx/nginx-ingress-operator:1.3.1
+    containerImage: quay.io/nginx/nginx-ingress-operator:1.4.1
     createdAt: placeholder
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
@@ -339,7 +345,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: nginx/nginx-ingress-operator:1.3.1
+                image: quay.io/nginx/nginx-ingress-operator:1.4.1
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -445,4 +451,4 @@ spec:
   minKubeVersion: 1.21.0
   provider:
     name: NGINX Inc
-  version: 1.3.1
+  version: 1.4.1

@@ -3,19 +3,14 @@
 image=$1
 version=$2
 
-kube_image=kubebuilder/kube-rbac-proxy
-kube_image_version=v0.8.0
-
-token="$(curl 'https://auth.docker.io/token?service=registry.docker.io&scope=repository:'${image}':pull' 2>/dev/null | jq -r '.token')"
-
-response=$(curl -sSfL -w '%{header_json}' -H "Authorization: Bearer ${token}" -H "Accept: application/vnd.oci.image.index.v1+json" "https://index.docker.io/v2/${image}/manifests/${version}" | jq -s)
+response=$(curl -sSfL -w '%{header_json}' -H "Accept: application/vnd.oci.image.index.v1+json" "https://quay.io/v2/${image}/manifests/${version}" | jq -s)
 
 image_digest=$(jq -r '.[1]."docker-content-digest"[]' <<<$response)
 manifest_digest=$(jq -r '.[0].manifests[0].digest' <<<$response)
 
-digest="$(curl -sSfL -H "Authorization: Bearer ${token}" -H "Accept: application/vnd.oci.image.manifest.v1+json" "https://index.docker.io/v2/${image}/manifests/${manifest_digest}" | jq -r '.config.digest')"
+digest="$(curl -sSfL -H "Accept: application/vnd.oci.image.manifest.v1+json" "https://quay.io/v2/${image}/manifests/${manifest_digest}" | jq -r '.config.digest')"
 
-created=$(curl -sSfL -H "Accept: application/vnd.oci.image.config.v1+json" -H "Authorization: Bearer ${token}" "https://index.docker.io/v2/${image}/blobs/${digest}" | jq -r '.config.Labels."org.opencontainers.image.created"')
+created=$(curl -sSfL -H "Accept: application/vnd.oci.image.config.v1+json" "https://quay.io/v2/${image}/blobs/${digest}" | jq -r '.config.Labels."org.opencontainers.image.created"')
 
 proxy="./config/default/manager_auth_proxy_patch.yaml"
 kube_proxy=$(yq e '.spec.template.spec.containers.[0].image' $proxy)
@@ -27,6 +22,6 @@ kube_digest=$(curl -sSfL -I -H "Accept: application/vnd.docker.distribution.mani
 
 printf "%s\n\n" "Manually repleace the following values in bundle/manifests/nginx-ingress-operator.clusterserviceversion.yaml"
 printf "%s\n" "metadata.annotations.createdAt: ${created}"
-printf "%s\n" "metadata.annotations.containerImage: docker.io/${image}@${image_digest}"
-printf "%s\n" "spec.install.spec.deployments[0].spec.template.spec.containers[1].image (nginx-ingress-operator): docker.io/${image}@${image_digest}"
+printf "%s\n" "metadata.annotations.containerImage: quay.io/${image}@${image_digest}"
+printf "%s\n" "spec.install.spec.deployments[0].spec.template.spec.containers[1].image (nginx-ingress-operator): quay.io/${image}@${image_digest}"
 printf "%s\n" "spec.install.spec.deployments[0].spec.template.spec.containers[0].image (kube-rbac-proxy): ${full_image}@${kube_digest}"
