@@ -27,5 +27,5 @@ requiredDropCapabilities:
  - ALL
 users:
  - 'system:serviceaccount:*:nginx-ingress'
- allowedCapabilities:
+allowedCapabilities:
   - NET_BIND_SERVICE
