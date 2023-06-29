@@ -1,0 +1,51 @@
+name: Sync Helm Chart
+
+on:
+  workflow_dispatch:
+    inputs:
+      chart_version:
+        description: "Chart version"
+        required: true
+        default: "0.0.0"
+
+jobs:
+  sync:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+
+      - name: Sync
+        id: sync
+        run: |
+          current_version=$(yq e '.appVersion' helm-charts/nginx-ingress/Chart.yaml)
+          echo "Current NIC version: $current_version"
+
+          cd helm-charts/
+          rm -rf nginx-ingress
+          helm pull oci://ghcr.io/nginxinc/charts/nginx-ingress --untar --version ${{ inputs.chart_version }}
+          csplit -s nginx-ingress/templates/rbac.yaml %---%+1 && cat nginx-ingress/templates/rbac.yaml | head -n1 | cat /dev/stdin xx00 > temp_rbac.yaml && mv temp_rbac.yaml nginx-ingress/templates/rbac.yaml
+          rm -rf xx00
+          sed -i '14s/name: {{ include "nginx-ingress.fullname" . }}/name: nginx-ingress-operator-nginx-ingress-admin/' nginx-ingress/templates/rbac.yaml
+
+          new_version=$(yq e '.appVersion' nginx-ingress/Chart.yaml)
+          echo "New NIC version: $new_version"
+
+          echo current_version=$current_version >> $GITHUB_OUTPUT
+          echo new_version=$new_version >> $GITHUB_OUTPUT
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@a51bbcd94d000df9ca0fcb54ec8be69aad8374b0 # v3.0.2
+        with:
+          find: ${{ steps.sync.outputs.current_version }}
+          replace: ${{ steps.sync.outputs.new_version }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
+        with:
+          commit-message: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}
+          title: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}
+          branch: feat/update-nic-to-${{ steps.sync.outputs.new_version }}
+          body: |
+            This automated PR updates the NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}.
+            The Helm Chart was updated to ${{ inputs.chart_version }}.
