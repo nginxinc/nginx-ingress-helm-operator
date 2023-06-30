@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.0
+
+An automatically generated list of changes can be found on Github at: [1.5.0 Release](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v1.5.0)
+
 ### 1.4.2
 
 An automatically generated list of changes can be found on Github at: [1.4.2 Release](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v1.4.2)

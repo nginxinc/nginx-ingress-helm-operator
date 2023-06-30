@@ -33,7 +33,7 @@ metadata:
               "customPorts": [],
               "image": {
                 "repository": "nginx/nginx-ingress",
-                "tag": "3.1.0-ubi",
+                "tag": "3.2.0-ubi",
                 "pullPolicy": "IfNotPresent"
               },
               "lifecycle": {},
@@ -176,7 +176,7 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: quay.io/nginx/nginx-ingress-operator:1.4.2
+    containerImage: quay.io/nginx/nginx-ingress-operator:1.5.0
     createdAt: placeholder
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
@@ -345,7 +345,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: quay.io/nginx/nginx-ingress-operator:1.4.2
+                image: quay.io/nginx/nginx-ingress-operator:1.5.0
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -372,8 +372,8 @@ spec:
                 - --secure-listen-address=0.0.0.0:8443
                 - --upstream=http://127.0.0.1:8080/
                 - --logtostderr=true
-                - --v=10
-                image: registry.redhat.io/openshift4/ose-kube-rbac-proxy:v4.9
+                - --v=0
+                image: registry.redhat.io/openshift4/ose-kube-rbac-proxy:v4.13
                 name: kube-rbac-proxy
                 ports:
                 - containerPort: 8443
@@ -448,7 +448,7 @@ spec:
   - email: kubernetes@nginx.com
     name: NGINX Inc
   maturity: alpha
-  minKubeVersion: 1.21.0
+  minKubeVersion: 1.22.0
   provider:
     name: NGINX Inc
-  version: 1.4.2
+  version: 1.5.0
