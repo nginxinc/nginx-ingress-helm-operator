@@ -394,7 +394,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: nginx/nginx-ingress-operator:1.5.0
+                image: quay.io/nginx/nginx-ingress-operator:1.5.0
                 livenessProbe:
                   httpGet:
                     path: /healthz

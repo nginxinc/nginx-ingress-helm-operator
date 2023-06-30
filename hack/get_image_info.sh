@@ -1,6 +1,6 @@
 #!/bin/bash
 
-image=$1
+image="${1#quay.io/}"
 version=$2
 
 response=$(curl -sSfL -w '%{header_json}' -H "Accept: application/vnd.oci.image.index.v1+json" "https://quay.io/v2/${image}/manifests/${version}" | jq -s)
