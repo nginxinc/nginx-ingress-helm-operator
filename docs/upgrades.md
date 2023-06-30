@@ -8,9 +8,9 @@ Release 1.0.0 includes a backward incompatible change from version 0.5.1 as we h
 1. Upgrade CRDs
 2. Uninstall Go operator -> this will also remove any instances of the NginxIngressController, but not any dependent objects (ingresses, VSs, etc)
 3. Remove the nginx-ingress ingressClass `k delete ingressclass/nginx`
-4. Install new operator 
+4. Install new operator
 5. Deploy common resources (scc, default server secret, ns, etc).
-**Note: Multiple NIC deployments: the RBAC resources should be deployed separately if deploying multiple ICs in same namespace. This is because only one of the ICs in a namespace will be assigned "ownership" of these resources. Similarly, the IngressClass resource needs to be created separately if deploying mutiple NIC instances with a shared IngressClass. See the [README](../README.md) for more information**
+**Note: Multiple NIC deployments: the RBAC resources should be deployed separately if deploying multiple ICs in same namespace. This is because only one of the ICs in a namespace will be assigned "ownership" of these resources. Similarly, the IngressClass resource needs to be created separately if deploying multiple NIC instances with a shared IngressClass. See the [README](../README.md) for more information**
 6. Re-create ingress controllers (note: multi IC rules) using the new Operator. Be sure to use the same configuration as the previous deployments (ingress class name, namespaces etc). They will pick up all deployed dependant resources.
 
 ### 0. Upgrade the existing NIC crds
@@ -19,7 +19,7 @@ Navigate [here](../helm-charts/nginx-ingress/) and run ` kubectl apply -f crds/`
 
 ### 1. Uninstall the existing 0.5.1 operator, the nginx ingress controller CRD, and the ingressClass
 
-Uninstall the operator using the web console - see [the OCP documentation for details](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.9/pdf/operators/OpenShift_Container_Platform-4.9-Operators-en-US.pdf). 
+Uninstall the operator using the web console - see [the OCP documentation for details](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.13/pdf/operators/OpenShift_Container_Platform-4.13-Operators-en-US.pdf).
 
 Next uninstall the NIC CRD `nginxingresscontrollers.k8s.nginx.org`. This will remove any instances of the NginxIngressController, but not any dependent objects (ingresses, VSs, etc).
 
@@ -42,7 +42,7 @@ Deploy the operator following the steps outlined in [manual installation doc](./
 ### 2. Cleanup the existing operator
 
 Uninstall the existing operator deployment:
-   
+
 1. Checkout the previous version of the nginx-ingress-operator [0.5.1](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v0.5.0).
 2. Uninstall the resources by running the following command:
     ```
