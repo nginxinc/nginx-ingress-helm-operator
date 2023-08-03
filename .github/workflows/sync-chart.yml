@@ -8,9 +8,15 @@ on:
         required: true
         default: "0.0.0"
 
+permissions:
+  contents: read
+
 jobs:
   sync:
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
