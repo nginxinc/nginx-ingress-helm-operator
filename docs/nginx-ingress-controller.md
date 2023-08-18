@@ -36,7 +36,7 @@ spec:
     customPorts: []
     image:
       repository: nginx/nginx-ingress
-      tag: "3.2.0-ubi"
+      tag: "3.2.1-ubi"
       # digest: "sha256:CHANGEME"
       pullPolicy: IfNotPresent
     lifecycle: {}
@@ -220,7 +220,7 @@ Parameter | Description | Default
 `controller.logLevel` | The log level of the Ingress Controller. | 1
 `controller.image.digest ` | The image digest of the Ingress Controller. | None
 `controller.image.repository` | The image repository of the Ingress Controller. | nginx/nginx-ingress
-`controller.image.tag` | The tag of the Ingress Controller image. | 3.2.0
+`controller.image.tag` | The tag of the Ingress Controller image. | 3.2.1
 `controller.image.pullPolicy` | The pull policy for the Ingress Controller image. | IfNotPresent
 `controller.lifecycle` | The lifecycle of the Ingress Controller pods. | {}
 `controller.customConfigMap` | The name of the custom ConfigMap used by the Ingress Controller. If set, then the default config is ignored. | ""
