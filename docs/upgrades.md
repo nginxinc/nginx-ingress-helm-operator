@@ -5,6 +5,7 @@ Release 1.0.0 includes a backward incompatible change from version 0.5.1 as we h
 ## OLM upgrade - 0.5.1 to 1.0.0
 
 **Note: The `nginx-ingress-operator` supports `Basic Install` only - we do not support auto-updates. When you are installing the Operator using the OLM, the auto-update feature should be disabled to avoid breaking changes being auto-applied. In OpenShift, this can be done by setting the `Approval Strategy` to `Manual`. Please see the [Operator SDK docs](https://sdk.operatorframework.io/docs/advanced-topics/operator-capabilities/operator-capabilities/) for more details on the Operator Capability Levels.**
+
 1. Upgrade CRDs
 2. Uninstall Go operator -> this will also remove any instances of the NginxIngressController, but not any dependent objects (ingresses, VSs, etc)
 3. Remove the nginx-ingress ingressClass `k delete ingressclass/nginx`
@@ -15,7 +16,7 @@ Release 1.0.0 includes a backward incompatible change from version 0.5.1 as we h
 
 ### 0. Upgrade the existing NIC crds
 
-Navigate [here](../helm-charts/nginx-ingress/) and run ` kubectl apply -f crds/`
+Navigate [here](../helm-charts/nginx-ingress/) and run `kubectl apply -f crds/`
 
 ### 1. Uninstall the existing 0.5.1 operator, the nginx ingress controller CRD, and the ingressClass
 
@@ -43,9 +44,10 @@ Deploy the operator following the steps outlined in [manual installation doc](./
 
 Uninstall the existing operator deployment:
 
-1. Checkout the previous version of the nginx-ingress-operator [0.5.1](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v0.5.0).
+1. Checkout the previous version of the nginx-ingress-operator [0.5.1](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v0.5.1).
 2. Uninstall the resources by running the following command:
-    ```
+
+    ```shell
     make undeploy
     ```
 
@@ -53,6 +55,6 @@ Uninstall the existing operator deployment:
 
 Install the latest version of the Operator following the steps outlined in [manual installation doc](./manual-installation.md).
 
-### 3. Deploy new ingress controller deployments
+### 4. Deploy new ingress controller deployments
 
 Use the new Nginx Ingress Operator installation to deploy Nginx Ingress Controller - see the release notes [here](https://docs.nginx.com/nginx-ingress-controller/releases/#nginx-ingress-controller-2-2-0) and a guide to the Helm configuration parameters [here](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration)
