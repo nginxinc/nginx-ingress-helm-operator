@@ -33,7 +33,7 @@ metadata:
               "customPorts": [],
               "image": {
                 "repository": "nginx/nginx-ingress",
-                "tag": "3.2.1-ubi",
+                "tag": "3.3.0-ubi",
                 "pullPolicy": "IfNotPresent"
               },
               "lifecycle": {},
