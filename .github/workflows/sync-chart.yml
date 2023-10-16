@@ -23,6 +23,11 @@ jobs:
         with:
           token: ${{ secrets.NGINX_PAT }}
 
+      - name: Setup Helm
+        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Sync
         id: sync
         run: |
