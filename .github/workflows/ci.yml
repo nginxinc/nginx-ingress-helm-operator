@@ -140,6 +140,7 @@ jobs:
         with:
           minor-label: "enhancement"
           major-label: "change"
+          publish: ${{ github.ref_type == 'tag' }}
           variables: |
             nic_version=${{ steps.vars.outputs.chart_version }}
             openshift_version=${{ steps.vars.outputs.openshift_version }}
