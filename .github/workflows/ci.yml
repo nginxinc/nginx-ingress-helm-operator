@@ -24,6 +24,8 @@ jobs:
   build:
     name: Build Image
     runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.vars.outputs.version }}
     permissions:
       contents: write # for lucacome/draft-release to create a draft release
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
@@ -149,16 +151,57 @@ jobs:
             - OpenShift {{openshift_version}} or newer.
         if: github.event_name != 'pull_request'
 
+  certify:
+    name: Certify for Red Hat OpenShift
+    runs-on: ubuntu-22.04
+    needs: build
+    if: ${{ github.ref_type == 'tag' }}
+    steps:
       - name: Certify Images
         continue-on-error: true
         run: |
-          curl -fsSL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.6.9/preflight-linux-amd64 --output preflight
+          curl -fsSL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.7.0/preflight-linux-amd64 --output preflight
           chmod +x preflight
 
           IFS=',' read -ra arch_list <<< "${{ env.platforms }}"
 
           for arch in "${arch_list[@]}"; do
               architecture=("${arch#*/}")
-              ./preflight check container quay.io/nginx/nginx-ingress-operator:${{ steps.meta.outputs.version }} --pyxis-api-token ${{ secrets.PYXIS_API_TOKEN }} --certification-project-id ${{ secrets.CERTIFICATION_PROJECT_ID }} --platform $architecture --submit
+              ./preflight check container quay.io/nginx/nginx-ingress-operator:${{ needs.build.outputs.version }} --pyxis-api-token ${{ secrets.PYXIS_API_TOKEN }} --certification-project-id ${{ secrets.CERTIFICATION_PROJECT_ID }} --platform $architecture --submit
           done
-        if: ${{ github.ref_type == 'tag' }}
+
+      - name: Make
+        run: |
+          make bundle USE_IMAGE_DIGESTS=true
+
+      - name: Checkout certified-operators repo
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        with:
+          token: ${{ secrets.NGINX_PAT }}
+          repository: nginx-bot/certified-operators
+          path: certified-operators
+
+      - name: Update certified-operators repo
+        working-directory: certified-operators/operators/nginx-ingress-operator
+        run: |
+          mkdir v${{ needs.build.outputs.version }}
+          cp -R ../../../bundle/manifests v${{ needs.build.outputs.version }}/
+          cp -R ../../../bundle/metadata v${{ needs.build.outputs.version }}/
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@8756aa072ef5b4a080af5dc8fef36c5d586e521d # v5.0.0
+        with:
+          commit_message: operator nginx-ingress-operator (v${{ needs.build.outputs.version }})
+          commit_author: nginx-bot <integrations@nginx.com>
+          commit_user_name: nginx-bot
+          commit_user_email: integrations@nginx.com
+          create_branch: true
+          branch: update-nginx-ingress-operator-to-v${{ needs.build.outputs.version }}
+          repository: certified-operators
+
+      - name: Create PR
+        working-directory: certified-operators
+        run: |
+          gh pr create --title "operator nginx-ingress-operator (v${{ needs.build.outputs.version }})" --body "Update nginx-ingress-operator to v${{ needs.build.outputs.version }}" --head nginx-bot:update-nginx-ingress-operator-to-v${{ needs.build.outputs.version }} --base main --repo redhat-openshift-ecosystem/certified-operators
+        env:
+          GITHUB_TOKEN: ${{ secrets.NGINX_PAT }}
