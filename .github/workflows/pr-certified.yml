@@ -1,0 +1,57 @@
+name: Certify Operator
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        with:
+          token: ${{ secrets.NGINX_PAT }}
+
+      - name: Make
+        run: |
+          make bundle USE_IMAGE_DIGESTS=true
+
+      - name: Checkout certified-operators repo
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        with:
+          token: ${{ secrets.NGINX_PAT }}
+          repository: nginx-bot/certified-operators
+          path: certified-operators
+
+      - name: Sync fork with upstream
+        run: |
+          git fetch upstream
+          git merge upstream/main
+          git push
+
+      - name: Update certified-operators repo
+        working-directory: certified-operators/operators/nginx-ingress-operator
+        run: |
+          mkdir v2.0.1
+          cd v2.0.1
+          cp -R ../../../bundle/manifests .
+          cp -R ../../../bundle/metadata .
+
+      - name: Commit changes
+        id: commit
+        uses: stefanzweifel/git-auto-commit-action@v4.16.0
+        with:
+          commit_message: operator nginx-ingress-operator (v2.0.1)
+          create_branch: true
+          branch: update-nginx-ingress-operator-to-v2.0.1
+          repository: certified-operators
+
+      - name: Create PR
+        working-directory: certified-operators
+        run: |
+          gh pr create --title "operator nginx-ingress-operator (v2.0.1)" --body "Update nginx-ingress-operator to v2.0.1" --head nginx-bot:update-nginx-ingress-operator-to-v2.0.1 --base main --repo redhat-openshift-ecosystem/certified-operators
