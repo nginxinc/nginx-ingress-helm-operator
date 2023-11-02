@@ -1,4 +1,7 @@
-[![Continuous Integration](https://github.com/nginxinc/nginx-ingress-helm-operator/workflows/Continuous%20Integration/badge.svg)](https://github.com/nginxinc/nginx-ingress-helm-operator/actions) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/nginxinc/nginx-ingress-helm-operator/badge)](https://api.securityscorecards.dev/projects/github.com/nginxinc/nginx-ingress-helm-operator)
+[![Continuous Integration](https://github.com/nginxinc/nginx-ingress-helm-operator/workflows/Continuous%20Integration/badge.svg)](https://github.com/nginxinc/nginx-ingress-helm-operator/actions)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/nginxinc/nginx-ingress-helm-operator/badge)](https://api.securityscorecards.dev/projects/github.com/nginxinc/nginx-ingress-helm-operator)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+![Commercial Support](https://badgen.net/badge/support/commercial/green?icon=awesome)
 
 # NGINX Ingress Operator
 
@@ -14,7 +17,7 @@ The following table shows the relation between the versions of the two projects:
 
 | NGINX Ingress Controller | NGINX Ingress Operator |
 | ------------------------ | ---------------------- |
-| 3.3.x                    | 2.0.1                  |
+| 3.3.x                    | 2.0.2                  |
 | 3.2.x                    | 1.5.2                  |
 | 3.1.x                    | 1.4.2                  |
 | 3.0.x                    | 1.3.1                  |
@@ -69,7 +72,7 @@ See [upgrade docs](./docs/upgrades.md)
 
 We publish NGINX Ingress Operator releases on GitHub. See our [releases page](https://github.com/nginxinc/nginx-ingress-helm-operator/releases).
 
-The latest stable release is [2.0.1](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v2.0.1). For production use, we recommend that you choose the latest stable release.
+The latest stable release is [2.0.2](https://github.com/nginxinc/nginx-ingress-helm-operator/releases/tag/v2.0.2). For production use, we recommend that you choose the latest stable release.
 
 ## Development
 
