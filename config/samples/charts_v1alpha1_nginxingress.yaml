@@ -97,7 +97,7 @@ spec:
     replicaCount: 1
     ingressClass:
       name: nginx
-    setAsDefaultIngress: false
+      setAsDefaultIngress: false
     watchNamespace: ""
     watchNamespaceLabel: ""
     watchSecretNamespace: ""
