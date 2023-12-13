@@ -3,7 +3,7 @@ kind: NginxIngress
 metadata:
   name: nginxingress-sample
 spec:
-  # Default values copied from <project_dir>/helm-charts/nginx-ingress/values.yaml
+  # Default values copied from <project_dir>/deployments/helm-chart/values.yaml
   controller:
     name: controller
     kind: deployment
