@@ -36,9 +36,15 @@ metadata:
                 "annotations": {},
                 "entries": {}
               },
+              "containerPort": {
+                "http": 80,
+                "https": 443
+              },
               "customConfigMap": "",
               "customPorts": [],
               "defaultTLS": {
+                "cert": "",
+                "key": "",
                 "secret": ""
               },
               "disableIPV6": false,
@@ -60,18 +66,28 @@ metadata:
               "healthStatus": false,
               "healthStatusURI": "/nginx-health",
               "hostNetwork": false,
+              "hostPort": {
+                "enable": false,
+                "http": 80,
+                "https": 443
+              },
               "image": {
                 "pullPolicy": "IfNotPresent",
                 "repository": "nginx/nginx-ingress",
                 "tag": "3.3.2-ubi"
               },
               "includeYear": false,
-              "ingressClass": "nginx",
+              "ingressClass": {
+                "create": true,
+                "name": "nginx",
+                "setAsDefaultIngress": false
+              },
               "initContainers": [],
               "kind": "deployment",
               "lifecycle": {},
               "logLevel": 1,
               "minReadySeconds": 0,
+              "name": "controller",
               "nginxDebug": false,
               "nginxReloadTimeout": 60000,
               "nginxStatus": {
@@ -88,6 +104,7 @@ metadata:
                 "annotations": {},
                 "enabled": false
               },
+              "readOnlyRootFilesystem": false,
               "readyStatus": {
                 "enable": true,
                 "initialDelaySeconds": 0,
@@ -106,8 +123,10 @@ metadata:
                   "memory": "128Mi"
                 }
               },
+              "selectorLabels": {},
               "service": {
                 "annotations": {},
+                "clusterIP": "",
                 "create": true,
                 "customPorts": [],
                 "externalIPs": [],
@@ -131,15 +150,9 @@ metadata:
                 "annotations": {},
                 "imagePullSecretName": ""
               },
-              "serviceMonitor": {
-                "create": false,
-                "endpoints": [],
-                "labels": {},
-                "selectorMatchLabels": {}
-              },
-              "setAsDefaultIngress": false,
               "strategy": {},
               "terminationGracePeriodSeconds": 30,
+              "tlsPassthroughPort": 443,
               "tolerations": [],
               "volumeMounts": [],
               "volumes": [],
@@ -147,7 +160,9 @@ metadata:
               "watchNamespaceLabel": "",
               "watchSecretNamespace": "",
               "wildcardTLS": {
-                "secret": null
+                "cert": "",
+                "key": "",
+                "secret": ""
               }
             },
             "nginxServiceMesh": {
@@ -158,12 +173,29 @@ metadata:
               "create": true,
               "port": 9113,
               "scheme": "http",
-              "secret": ""
+              "secret": "",
+              "service": {
+                "create": false,
+                "labels": {
+                  "service": "nginx-ingress-prometheus-service"
+                }
+              },
+              "serviceMonitor": {
+                "create": false,
+                "endpoints": [
+                  {
+                    "port": "prometheus"
+                  }
+                ],
+                "labels": {},
+                "selectorMatchLabels": {
+                  "service": "nginx-ingress-prometheus-service"
+                }
+              }
             },
             "rbac": {
               "create": true
             },
-            "readOnlyRootFilesystem": false,
             "serviceInsight": {
               "create": false,
               "port": 9114,
@@ -177,7 +209,7 @@ metadata:
     categories: Monitoring, Networking
     certified: "true"
     containerImage: quay.io/nginx/nginx-ingress-operator:2.0.2
-    createdAt: "2023-11-01T20:51:35Z"
+    createdAt: "2023-12-11T15:56:06Z"
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
     operatorframework.io/suggested-namespace: nginx-ingress
