@@ -26,6 +26,7 @@ metadata:
               },
               "autoscaling": {
                 "annotations": {},
+                "behavior": {},
                 "enabled": false,
                 "maxReplicas": 3,
                 "minReplicas": 1,
@@ -42,6 +43,8 @@ metadata:
               },
               "customConfigMap": "",
               "customPorts": [],
+              "defaultHTTPListenerPort": 80,
+              "defaultHTTPSListenerPort": 443,
               "defaultTLS": {
                 "cert": "",
                 "key": "",
@@ -54,7 +57,7 @@ metadata:
               "enableExternalDNS": false,
               "enableLatencyMetrics": false,
               "enableOIDC": false,
-              "enablePreviewPolicies": false,
+              "enableSSLDynamicReload": true,
               "enableSnippets": false,
               "enableTLSPassthrough": false,
               "env": [],
@@ -81,6 +84,12 @@ metadata:
                 "create": true,
                 "name": "nginx",
                 "setAsDefaultIngress": false
+              },
+              "initContainerResources": {
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "128Mi"
+                }
               },
               "initContainers": [],
               "kind": "deployment",
@@ -115,7 +124,8 @@ metadata:
                 "annotations": {},
                 "enable": true,
                 "enableLeaderElection": true,
-                "ingressLink": ""
+                "ingressLink": "",
+                "leaderElectionLockName": "nginx-ingress-leader"
               },
               "resources": {
                 "requests": {
@@ -148,8 +158,10 @@ metadata:
               },
               "serviceAccount": {
                 "annotations": {},
-                "imagePullSecretName": ""
+                "imagePullSecretName": "",
+                "imagePullSecretsNames": []
               },
+              "shareProcessNamespace": false,
               "strategy": {},
               "terminationGracePeriodSeconds": 30,
               "tlsPassthroughPort": 443,
@@ -208,8 +220,8 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: quay.io/nginx/nginx-ingress-operator:2.0.2
-    createdAt: "2023-12-20T03:21:37Z"
+    containerImage: quay.io/nginx/nginx-ingress-operator:2.1.0
+    createdAt: "2023-12-20T11:49:38Z"
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
     operatorframework.io/suggested-namespace: nginx-ingress
@@ -222,7 +234,7 @@ metadata:
     operatorframework.io/arch.arm64: supported
     operatorframework.io/arch.ppc64le: supported
     operatorframework.io/arch.s390x: supported
-  name: nginx-ingress-operator.v2.0.2
+  name: nginx-ingress-operator.v2.1.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -426,7 +438,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: quay.io/nginx/nginx-ingress-operator:2.0.2
+                image: quay.io/nginx/nginx-ingress-operator:2.1.0
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -517,4 +529,4 @@ spec:
   minKubeVersion: 1.22.0
   provider:
     name: NGINX Inc
-  version: 2.0.2
+  version: 2.1.0
