@@ -42,6 +42,7 @@ spec:
       https: 443
     dnsPolicy: ClusterFirst
     nginxDebug: false
+    shareProcessNamespace: false
     logLevel: 1
     customPorts: []
     image:
@@ -72,13 +73,21 @@ spec:
       maxReplicas: 3
       targetCPUUtilizationPercentage: 50
       targetMemoryUtilizationPercentage: 50
+      behavior: {}
     resources:
       requests:
         cpu: 100m
         memory: 128Mi
-    # limits:
-    #   cpu: 1
-    #   memory: 1Gi
+      # limits:
+      #   cpu: 1
+      #   memory: 1Gi
+    initContainerResources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      # limits:
+      #   cpu: 1
+      #   memory: 1Gi
     tolerations: []
     affinity: {}
     # topologySpreadConstraints: {}
@@ -117,7 +126,6 @@ spec:
     watchNamespaceLabel: ""
     watchSecretNamespace: ""
     enableCustomResources: true
-    enablePreviewPolicies: false
     enableOIDC: false
     includeYear: false
     enableTLSPassthrough: false
@@ -170,12 +178,13 @@ spec:
       annotations: {}
       # name: nginx-ingress
       imagePullSecretName: ""
+      imagePullSecretsNames: []
     reportIngressStatus:
       enable: true
       # externalService: nginx-ingress
       ingressLink: ""
       enableLeaderElection: true
-      # leaderElectionLockName: "nginx-ingress-leader-election"
+      leaderElectionLockName: "nginx-ingress-leader"
       annotations: {}
     pod:
       annotations: {}
@@ -187,7 +196,10 @@ spec:
       initialDelaySeconds: 0
     enableLatencyMetrics: false
     disableIPV6: false
+    defaultHTTPListenerPort: 80
+    defaultHTTPSListenerPort: 443
     readOnlyRootFilesystem: false
+    enableSSLDynamicReload: true
   rbac:
     create: true
   prometheus:
