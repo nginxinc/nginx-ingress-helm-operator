@@ -25,7 +25,7 @@ jobs:
     name: Build Image
     runs-on: ubuntu-22.04
     outputs:
-      version: ${{ steps.vars.outputs.version }}
+      version: ${{ steps.meta.outputs.version }}
     permissions:
       contents: write # for lucacome/draft-release to create a draft release
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
@@ -161,7 +161,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Certify Images
-        continue-on-error: true
+        continue-on-error: false
         run: |
           curl -fsSL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.8.0/preflight-linux-amd64 --output preflight
           chmod +x preflight
