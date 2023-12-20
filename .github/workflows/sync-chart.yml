@@ -35,11 +35,16 @@ jobs:
           echo "Current NIC version: $current_version"
 
           cd helm-charts/
+          schema_dir=$(cd nginx-ingress && echo v1.*)
+          mv nginx-ingress/$schema_dir $schema_dir
           rm -rf nginx-ingress
+
           helm pull oci://ghcr.io/nginxinc/charts/nginx-ingress --untar --version ${{ inputs.chart_version }}
-          csplit -s nginx-ingress/templates/rbac.yaml %---%+1 && cat nginx-ingress/templates/rbac.yaml | head -n1 | cat /dev/stdin xx00 > temp_rbac.yaml && mv temp_rbac.yaml nginx-ingress/templates/rbac.yaml
-          rm -rf xx00
-          sed -i '14s/name: {{ include "nginx-ingress.fullname" . }}/name: nginx-ingress-operator-nginx-ingress-admin/' nginx-ingress/templates/rbac.yaml
+          rm -f nginx-ingress/templates/clusterrole.yaml
+          rm -f nginx-ingress/templates/controller-role.yaml
+          rm -f nginx-ingress/templates/controller-rolebiding.yaml
+          sed -i '14s/name: {{ include "nginx-ingress.fullname" . }}/name: nginx-ingress-operator-nginx-ingress-admin/' nginx-ingress/templates/clusterrolebiding.yaml
+          mv $schema_dir nginx-ingress/
 
           new_version=$(yq e '.appVersion' nginx-ingress/Chart.yaml)
           echo "New NIC version: $new_version"
