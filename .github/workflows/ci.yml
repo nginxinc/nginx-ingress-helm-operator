@@ -189,6 +189,7 @@ jobs:
           mkdir v2.1.0
           cp -R ../../../bundle/manifests v2.1.0/
           cp -R ../../../bundle/metadata v2.1.0/
+        if: ${{ github.ref_type == 'tag' }}
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@8756aa072ef5b4a080af5dc8fef36c5d586e521d # v5.0.0
@@ -200,6 +201,7 @@ jobs:
           create_branch: true
           branch: update-nginx-ingress-operator-to-v2.1.0
           repository: certified-operators
+        if: ${{ github.ref_type == 'tag' }}
 
       - name: Debug PR
         working-directory: certified-operators
