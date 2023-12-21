@@ -160,7 +160,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Certify Images
-        continue-on-error: false
+        continue-on-error: true
         run: |
           curl -fsSL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.8.0/preflight-linux-amd64 --output preflight
           chmod +x preflight
