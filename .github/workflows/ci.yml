@@ -204,7 +204,7 @@ jobs:
       - name: Debug PR
         working-directory: certified-operators
         run: |
-          echo gh pr create --title "operator nginx-ingress-operator (v2.1.0)" --body "Update nginx-ingress-operator to v2.1.0" --head nginx-bot:update-nginx-ingress-operator-to-v2.1.0 --base main --repo redhat-openshift-ecosystem/certified-operators
+          gh pr create --title "operator nginx-ingress-operator (v2.1.0)" --body "Update nginx-ingress-operator to v2.1.0" --head nginx-bot:update-nginx-ingress-operator-to-v2.1.0 --base main --repo redhat-openshift-ecosystem/certified-operators
         env:
           GITHUB_TOKEN: ${{ secrets.NGINX_PAT }}  
 
