@@ -37,3 +37,5 @@ Alternatively, to create an SCC for NIC daemonsets, please run this command:
 `kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-ingress-helm-operator/v2.1.0/resources/scc-daemonset.yaml`
 
 You can now deploy the NGINX Ingress Controller instances.
+
+**Note: If you're upgrading your operator installation to a later release, navigate [here](../helm-charts/nginx-ingress/) and run `kubectl apply -f crds/` or `oc apply -f crds/` as a prerequisite**

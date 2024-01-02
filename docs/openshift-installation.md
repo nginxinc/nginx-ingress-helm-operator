@@ -8,14 +8,16 @@ The NGINX Ingress Operator is a [RedHat certified Operator](https://connect.redh
 
 1. In the OpenShift dashboard, click `Operators` > `Operator Hub` in the left menu and use the search box to type `nginx ingress`:
    ![alt text](./images/openshift1.png "Operators")
-1. Click the `NGINX Ingress Operator` and click `Install`:
+2. Click the `NGINX Ingress Operator` and click `Install`:
    ![alt text](./images/openshift2.png "NGINX Ingress Operator")
-1. Click `Subscribe`:
+3. Click `Subscribe`:
    ![alt text](./images/openshift3.png "NGINX Ingress Operator Install")
 
 OpenShift will install the NGINX Ingress Operator:
 
 ![alt text](./images/openshift4.png "NGINX Ingress Operator Subscribe")
+
+**Note: If you're upgrading your operator installation to a later release, navigate [here](../helm-charts/nginx-ingress/) and run `kubectl apply -f crds/` or `oc apply -f crds/` as a prerequisite**
 
 Additional steps:
 
