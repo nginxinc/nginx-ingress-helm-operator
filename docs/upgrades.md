@@ -14,11 +14,11 @@ Release 1.0.0 includes a backward incompatible change from version 0.5.1 as we h
 **Note: Multiple NIC deployments: the RBAC resources should be deployed separately if deploying multiple ICs in same namespace. This is because only one of the ICs in a namespace will be assigned "ownership" of these resources. Similarly, the IngressClass resource needs to be created separately if deploying multiple NIC instances with a shared IngressClass. See the [README](../README.md) for more information**
 6. Re-create ingress controllers (note: multi IC rules) using the new Operator. Be sure to use the same configuration as the previous deployments (ingress class name, namespaces etc). They will pick up all deployed dependant resources.
 
-### 0. Upgrade the existing NIC crds
+### 1. Upgrade the existing NIC crds
 
 Navigate [here](../helm-charts/nginx-ingress/) and run `kubectl apply -f crds/`
 
-### 1. Uninstall the existing 0.5.1 operator, the nginx ingress controller CRD, and the ingressClass
+### 2. Uninstall the existing 0.5.1 operator, the nginx ingress controller CRD, and the ingressClass
 
 Uninstall the operator using the web console - see [the OCP documentation for details](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.13/pdf/operators/OpenShift_Container_Platform-4.13-Operators-en-US.pdf).
 
@@ -26,11 +26,11 @@ Next uninstall the NIC CRD `nginxingresscontrollers.k8s.nginx.org`. This will re
 
 Finally, remove the nginx-ingress ingressClass `k delete ingressclass/nginx`.
 
-### 2. Install the latest version of the operator
+### 3. Install the latest version of the operator
 
 Install the latest version of the Operator following the steps outlined in [OpenShift installation doc](./openshift-installation.md).
 
-### 3. Deploy new ingress controller deployments
+### 4. Deploy new ingress controller deployments
 
 Use the new Nginx Ingress Operator installation to deploy Nginx Ingress Controller - see the release notes [here](https://docs.nginx.com/nginx-ingress-controller/releases/#nginx-ingress-controller-2-2-0) and a guide to the Helm configuration parameters [here](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration)
 
