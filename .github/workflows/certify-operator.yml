@@ -1,0 +1,60 @@
+name: Certify Operator
+
+on:
+  push:
+    branches:
+      - delete-branch
+
+env:
+  platforms: "linux/amd64,linux/arm64,linux/ppc64le,linux/s390x"
+
+concurrency:
+  group: ${{ github.ref_name }}-ci
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    name: Certify for Red Hat OpenShift
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Make
+        run: |
+          make bundle USE_IMAGE_DIGESTS=true
+
+      - name: Checkout certified-operators repo
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          token: ${{ secrets.NGINX_PAT }}
+          repository: nginx-bot/certified-operators
+          path: certified-operators
+
+      - name: Update certified-operators repo
+        working-directory: certified-operators/operators/nginx-ingress-operator
+        run: |
+          mkdir v2.1.1
+          cp -R ../../../bundle/manifests v2.1.1/
+          cp -R ../../../bundle/metadata v2.1.1/
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@8756aa072ef5b4a080af5dc8fef36c5d586e521d # v5.0.0
+        with:
+          commit_message: operator nginx-ingress-operator (v2.1.1)
+          commit_author: nginx-bot <integrations@nginx.com>
+          commit_user_name: nginx-bot
+          commit_user_email: integrations@nginx.com
+          create_branch: true
+          branch: update-nginx-ingress-operator-to-v2.1.1
+          repository: certified-operators
+
+      - name: Create PR
+        working-directory: certified-operators
+        run: |
+          gh pr create --title "operator nginx-ingress-operator (v2.1.1)" --body "Update nginx-ingress-operator to v2.1.1" --head nginx-bot:update-nginx-ingress-operator-to-v2.1.1 --base main --repo redhat-openshift-ecosystem/certified-operators
+        env:
+          GITHUB_TOKEN: ${{ secrets.NGINX_PAT }}
