@@ -19,6 +19,6 @@ jobs:
         uses: dawidd6/action-delete-branch@v3
         with:
           github_token: ${{ secrets.NGINX_PAT }}
-          branches: ${{ inputs.branch || 'update-nginx-ingress-operator-to-v2.1.1' }}
+          branches: ${{ inputs.branch || 'update-nginx-ingress-operator-to-v2.1.2' }}
           repository: certified-operators
           owner: nginx-bot
