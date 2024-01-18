@@ -1,0 +1,30 @@
+name: Close Operator PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Operator PR URL to close"
+        required: true
+
+
+permissions:
+  contents: read
+
+jobs:
+  pr-update:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Close PR
+        run: |
+          gh pr view ${{ inputs.url }}
+          rc=$?
+          if [ ${rc} -eq 0 ]; then
+            echo "Closing PR ${{ inputs.url }}"
+            gh pr close ${{ inputs.url }}
+            echo $?
+          else
+            echo "${{ inputs.url }} does not exist"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.NGINX_PAT }}
