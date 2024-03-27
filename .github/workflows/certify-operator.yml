@@ -3,13 +3,13 @@ name: Certify Operator
 on:
   push:
     branches:
-      - delete-branch
+      - delete-branchfdd
 
 env:
   platforms: "linux/amd64,linux/arm64,linux/ppc64le,linux/s390x"
 
 concurrency:
-  group: ${{ github.ref_name }}-ci
+  group: ${{ github.ref_name }}-certify
   cancel-in-progress: true
 
 permissions:
