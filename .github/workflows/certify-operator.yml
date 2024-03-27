@@ -3,7 +3,7 @@ name: Certify Operator
 on:
   push:
     branches:
-      - delete-branchfdd
+      - delete-branch
 
 env:
   platforms: "linux/amd64,linux/arm64,linux/ppc64le,linux/s390x"
