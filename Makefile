@@ -180,8 +180,8 @@ bundle: kustomize operator-sdk ## Generate bundle manifests and metadata, then v
 	$(OPERATOR_SDK) generate kustomize manifests --interactive=false -q
 	cd config/manager && $(KUSTOMIZE) edit set image controller=$(IMG)
 	$(KUSTOMIZE) build config/manifests | $(OPERATOR_SDK) generate bundle $(BUNDLE_GEN_FLAGS)
-	@printf "%s\n" '' 'LABEL com.redhat.openshift.versions="v4.10"' 'LABEL com.redhat.delivery.operator.bundle=true' 'LABEL com.redhat.delivery.backport=true' >> bundle.Dockerfile
-	@printf "%s\n" '' '  # OpenShift annotations.' '  com.redhat.openshift.versions: v4.10' >> bundle/metadata/annotations.yaml
+	@printf "%s\n" '' 'LABEL com.redhat.openshift.versions="v4.12"' 'LABEL com.redhat.delivery.operator.bundle=true' 'LABEL com.redhat.delivery.backport=true' >> bundle.Dockerfile
+	@printf "%s\n" '' '  # OpenShift annotations.' '  com.redhat.openshift.versions: v4.12' >> bundle/metadata/annotations.yaml
 	$(OPERATOR_SDK) bundle validate ./bundle
 
 .PHONY: bundle-build
