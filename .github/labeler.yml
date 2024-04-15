@@ -15,7 +15,8 @@ tests:
 
 documentation:
   - head-branch: ['^docs/', '^doc/']
-  - changed-files: '**/*.md'
+  - changed-files:
+    - any-glob-to-any-file: '**/*.md'
 
 dependencies:
   - head-branch: ['^deps/', '^dep/', '^dependabot/']
