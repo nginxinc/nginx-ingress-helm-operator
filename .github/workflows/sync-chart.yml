@@ -24,7 +24,7 @@ jobs:
           token: ${{ secrets.NGINX_PAT }}
 
       - name: Setup Helm
-        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
+        uses: azure/setup-helm@b7246b12e77f7134dc2d460a3d5bad15bbe29390 # v4.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,7 +60,7 @@ jobs:
           regex: false
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@70a41aba780001da0a30141984ae2a0c95d8704e # v6.0.2
+        uses: peter-evans/create-pull-request@9153d834b60caba6d51c9b9510b087acf9f33f83 # v6.0.4
         with:
           token: ${{ secrets.NGINX_PAT }}
           commit-message: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}

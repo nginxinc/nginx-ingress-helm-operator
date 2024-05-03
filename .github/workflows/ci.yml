@@ -64,7 +64,7 @@ jobs:
         if: github.event_name != 'pull_request'
 
       - name: Docker Buildx
-        uses: docker/setup-buildx-action@2b51285047da1547ffb1b2203d8be4c0af6b1f20 # v3.2.0
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
 
       - name: Output Variables
         id: vars
@@ -192,7 +192,7 @@ jobs:
           cp -R ../../../bundle/metadata v${{ needs.build.outputs.version }}/
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@8756aa072ef5b4a080af5dc8fef36c5d586e521d # v5.0.0
+        uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5.0.1
         with:
           commit_message: operator nginx-ingress-operator (v${{ needs.build.outputs.version }})
           commit_author: nginx-bot <integrations@nginx.com>
