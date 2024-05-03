@@ -8,11 +8,11 @@ Release 1.0.0 includes a backward incompatible change from version 0.5.1 as we h
 
 1. Upgrade CRDs
 2. Uninstall Go operator -> this will also remove any instances of the NginxIngressController, but not any dependent objects (ingresses, VSs, etc)
-3. Remove the nginx-ingress ingressClass `k delete ingressclass/nginx`
+3. Remove the nginx-ingress ingressClass `kubectl delete ingressclass/nginx`
 4. Install new operator
 5. Deploy common resources (scc, default server secret, ns, etc).
 **Note: Multiple NIC deployments: the RBAC resources should be deployed separately if deploying multiple ICs in same namespace. This is because only one of the ICs in a namespace will be assigned "ownership" of these resources. Similarly, the IngressClass resource needs to be created separately if deploying multiple NIC instances with a shared IngressClass. See the [README](../README.md) for more information**
-6. Re-create ingress controllers (note: multi IC rules) using the new Operator. Be sure to use the same configuration as the previous deployments (ingress class name, namespaces etc). They will pick up all deployed dependant resources.
+6. Re-create ingress controllers (note: multi IC rules) using the new Operator. Be sure to use the same configuration as the previous deployments (ingress class name, namespaces etc). They will pick up all deployed dependent resources.
 
 ### 1. Upgrade the existing NIC crds
 
@@ -24,7 +24,7 @@ Uninstall the operator using the web console - see [the OCP documentation for de
 
 Next uninstall the NIC CRD `nginxingresscontrollers.k8s.nginx.org`. This will remove any instances of the NginxIngressController, but not any dependent objects (ingresses, VSs, etc).
 
-Finally, remove the nginx-ingress ingressClass `k delete ingressclass/nginx`.
+Finally, remove the nginx-ingress ingressClass `kubectl delete ingressclass/nginx`.
 
 ### 3. Install the latest version of the operator
 
