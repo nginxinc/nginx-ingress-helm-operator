@@ -1,0 +1,23 @@
+name: Delete Operator Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Operator Branch to delete"
+        default: "update-nginx-ingress-operator-to-v2.2.1"
+
+permissions:
+  contents: read
+
+jobs:
+  branch-delete:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Delete branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.NGINX_PAT }}
+          branches: ${{ inputs.branch }}
+          repository: certified-operators
+          owner: nginx-bot
