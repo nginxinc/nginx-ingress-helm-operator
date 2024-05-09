@@ -220,8 +220,8 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: quay.io/nginx/nginx-ingress-operator:2.2.0
-    createdAt: "2024-03-27T16:13:43Z"
+    containerImage: quay.io/nginx/nginx-ingress-operator:2.2.1
+    createdAt: "2024-05-09T08:59:45Z"
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
     features.operators.openshift.io/cnf: "false"
