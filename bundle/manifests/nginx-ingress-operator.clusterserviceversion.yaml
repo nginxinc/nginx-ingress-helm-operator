@@ -77,7 +77,7 @@ metadata:
               "image": {
                 "pullPolicy": "IfNotPresent",
                 "repository": "nginx/nginx-ingress",
-                "tag": "3.4.2-ubi"
+                "tag": "3.5.1-ubi"
               },
               "includeYear": false,
               "ingressClass": {
@@ -220,12 +220,22 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: quay.io/nginx/nginx-ingress-operator:2.1.0
-    createdAt: "2023-12-20T11:49:38Z"
+    containerImage: quay.io/nginx/nginx-ingress-operator:2.2.1
+    createdAt: "2024-05-09T08:59:45Z"
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
+    features.operators.openshift.io/cnf: "false"
+    features.operators.openshift.io/cni: "false"
+    features.operators.openshift.io/csi: "false"
+    features.operators.openshift.io/disconnected: "false"
+    features.operators.openshift.io/fips-compliant: "false"
+    features.operators.openshift.io/proxy-aware: "false"
+    features.operators.openshift.io/tls-profiles: "false"
+    features.operators.openshift.io/token-auth-aws: "false"
+    features.operators.openshift.io/token-auth-azure: "false"
+    features.operators.openshift.io/token-auth-gcp: "false"
     operatorframework.io/suggested-namespace: nginx-ingress
-    operators.operatorframework.io/builder: operator-sdk-v1.33.0
+    operators.operatorframework.io/builder: operator-sdk-v1.34.1
     operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
     repository: https://github.com/nginxinc/nginx-ingress-helm-operator
     support: NGINX Inc.
@@ -234,7 +244,7 @@ metadata:
     operatorframework.io/arch.arm64: supported
     operatorframework.io/arch.ppc64le: supported
     operatorframework.io/arch.s390x: supported
-  name: nginx-ingress-operator.v2.1.0
+  name: nginx-ingress-operator.v2.2.1
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -438,7 +448,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: quay.io/nginx/nginx-ingress-operator:2.1.0
+                image: quay.io/nginx/nginx-ingress-operator:2.2.1
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -526,7 +536,7 @@ spec:
   - email: kubernetes@nginx.com
     name: NGINX Inc
   maturity: alpha
-  minKubeVersion: 1.22.0
+  minKubeVersion: 1.23.0
   provider:
     name: NGINX Inc
-  version: 2.1.0
+  version: 2.2.1

@@ -6,10 +6,20 @@ metadata:
     capabilities: Basic Install
     categories: Monitoring, Networking
     certified: "true"
-    containerImage: quay.io/nginx/nginx-ingress-operator:2.1.0
+    containerImage: quay.io/nginx/nginx-ingress-operator:2.2.1
     createdAt: placeholder
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
+    features.operators.openshift.io/cnf: "false"
+    features.operators.openshift.io/cni: "false"
+    features.operators.openshift.io/csi: "false"
+    features.operators.openshift.io/disconnected: "false"
+    features.operators.openshift.io/fips-compliant: "false"
+    features.operators.openshift.io/proxy-aware: "false"
+    features.operators.openshift.io/tls-profiles: "false"
+    features.operators.openshift.io/token-auth-aws: "false"
+    features.operators.openshift.io/token-auth-azure: "false"
+    features.operators.openshift.io/token-auth-gcp: "false"
     operatorframework.io/suggested-namespace: nginx-ingress
     repository: https://github.com/nginxinc/nginx-ingress-helm-operator
     support: NGINX Inc.
@@ -175,7 +185,7 @@ spec:
                 - --metrics-bind-address=127.0.0.1:8080
                 - --leader-elect
                 - --leader-election-id=nginx-ingress-operator
-                image: quay.io/nginx/nginx-ingress-operator:2.1.0
+                image: quay.io/nginx/nginx-ingress-operator:2.2.1
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -278,7 +288,7 @@ spec:
   - email: kubernetes@nginx.com
     name: NGINX Inc
   maturity: alpha
-  minKubeVersion: 1.22.0
+  minKubeVersion: 1.23.0
   provider:
     name: NGINX Inc
-  version: 2.1.0
+  version: 2.2.1

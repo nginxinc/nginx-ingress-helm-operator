@@ -32,17 +32,17 @@ jobs:
       packages: write # for docker/build-push-action to push to GHCR
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
 
       - name: DockerHub Login
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
         if: github.event_name != 'pull_request'
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -50,7 +50,7 @@ jobs:
         if: github.event_name != 'pull_request'
 
       - name: Login to Quay.io
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
         with:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
@@ -64,7 +64,7 @@ jobs:
         if: github.event_name != 'pull_request'
 
       - name: Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
 
       - name: Output Variables
         id: vars
@@ -75,7 +75,7 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@dbef88086f6cef02e264edb7dbf63250c17cef6c # v5.5.0
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
           images: |
             nginx/nginx-ingress-operator
@@ -97,7 +97,7 @@ jobs:
             description="The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers"
 
       - name: Build Image
-        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5.1.0
+        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5.3.0
         with:
           context: "."
           cache-from: type=gha
@@ -113,7 +113,7 @@ jobs:
           provenance: false
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@d43c1f16c00cfd3978dde6c07f4bbcf9eb6993ca # 0.16.1
+        uses: aquasecurity/trivy-action@b2933f565dbc598b29947660e66259e3c7bc8561 # 0.20.0
         continue-on-error: true
         with:
           image-ref: nginx/nginx-ingress-operator:${{ steps.meta.outputs.version }}
@@ -128,7 +128,7 @@ jobs:
           sarif_file: "trivy-results.sarif"
 
       - name: Upload Scan Results
-        uses: actions/upload-artifact@1eb3cb2b3e0f29609092a73eb033bb759a334595 # v4.1.0
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         continue-on-error: true
         with:
           name: "trivy-results.sarif"
@@ -136,7 +136,7 @@ jobs:
         if: always()
 
       - name: Create/Update Draft
-        uses: lucacome/draft-release@52f02d1a69b61568e54ab5cf86ce91503bac4066 # v1.0.2
+        uses: lucacome/draft-release@e076259ceb036bc5f2c2a76559784c12cf8d2e74 # v1.0.4
         with:
           minor-label: "enhancement"
           major-label: "change"
@@ -158,12 +158,12 @@ jobs:
     if: ${{ github.ref_type == 'tag' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
 
       - name: Certify Images
         continue-on-error: false
         run: |
-          curl -fsSL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.8.0/preflight-linux-amd64 --output preflight
+          curl -fsSL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.9.4/preflight-linux-amd64 --output preflight
           chmod +x preflight
 
           IFS=',' read -ra arch_list <<< "${{ env.platforms }}"
@@ -178,7 +178,7 @@ jobs:
           make bundle USE_IMAGE_DIGESTS=true
 
       - name: Checkout certified-operators repo
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
         with:
           token: ${{ secrets.NGINX_PAT }}
           repository: nginx-bot/certified-operators
@@ -192,7 +192,7 @@ jobs:
           cp -R ../../../bundle/metadata v${{ needs.build.outputs.version }}/
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@8756aa072ef5b4a080af5dc8fef36c5d586e521d # v5.0.0
+        uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5.0.1
         with:
           commit_message: operator nginx-ingress-operator (v${{ needs.build.outputs.version }})
           commit_author: nginx-bot <integrations@nginx.com>
