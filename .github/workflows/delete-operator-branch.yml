@@ -5,7 +5,7 @@ on:
     inputs:
       branch:
         description: "Operator Branch to delete"
-        default: "update-nginx-ingress-operator-to-v2.2.1"
+        default: "update-nginx-ingress-operator-to-v2.2.2"
 
 permissions:
   contents: read
