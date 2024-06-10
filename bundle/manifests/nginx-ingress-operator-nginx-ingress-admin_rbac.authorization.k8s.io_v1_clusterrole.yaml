@@ -84,6 +84,19 @@ rules:
   - list
   - watch
 - apiGroups:
+  - "apps"
+  resources:
+  - replicasets
+  - daemonset
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - list
+- apiGroups:
   - ""
   resources:
   - events
