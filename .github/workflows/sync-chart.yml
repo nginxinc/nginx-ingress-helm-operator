@@ -53,7 +53,7 @@ jobs:
           echo new_version=$new_version >> $GITHUB_OUTPUT
 
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@a51bbcd94d000df9ca0fcb54ec8be69aad8374b0 # v3.0.2
+        uses: jacobtomlinson/gha-find-replace@099c88fbf2a7da26b083521a8bfa13e4f0886b97 # v3.0.3
         with:
           find: ${{ steps.sync.outputs.current_version }}
           replace: ${{ steps.sync.outputs.new_version }}
