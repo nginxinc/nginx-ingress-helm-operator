@@ -54,6 +54,12 @@ OPERATOR_SDK_VERSION ?= v1.34.2
 # Image URL to use all building/pushing image targets
 IMG ?= $(IMAGE_TAG_BASE):$(VERSION)
 
+# kube-rbac-proxy image base
+KRP_IMAGE_BASE ?= quay.io/brancz/kube-rbac-proxy
+
+# kube-rbac-proxy image tag
+KRP_IMAGE_TAG ?= v0.18.0
+
 .PHONY: all
 all: docker-build
 
@@ -179,6 +185,8 @@ endif
 bundle: kustomize operator-sdk ## Generate bundle manifests and metadata, then validate generated files.
 	$(OPERATOR_SDK) generate kustomize manifests --interactive=false -q
 	cd config/manager && $(KUSTOMIZE) edit set image controller=$(IMG)
+	cd config/manifests/bases && $(KUSTOMIZE) edit set annotation containerImage:$(IMG)
+	cd config/default && $(KUSTOMIZE) edit set image kube-rbac-proxy=$(KRP_IMAGE_BASE):$(KRP_IMAGE_TAG)
 	$(KUSTOMIZE) build config/manifests | $(OPERATOR_SDK) generate bundle $(BUNDLE_GEN_FLAGS)
 	@printf "%s\n" '' 'LABEL com.redhat.openshift.versions="v4.12"' 'LABEL com.redhat.delivery.operator.bundle=true' 'LABEL com.redhat.delivery.backport=true' >> bundle.Dockerfile
 	@printf "%s\n" '' '  # OpenShift annotations.' '  com.redhat.openshift.versions: v4.12' >> bundle/metadata/annotations.yaml
