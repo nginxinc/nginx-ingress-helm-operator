@@ -5,8 +5,7 @@ metadata:
   name: nginx-ingress-admin
 allowPrivilegedContainer: false
 runAsUser:
-  type: MustRunAs
-  uid: 101
+  type: MustRunAsRange
 seLinuxContext:
   type: MustRunAs
 fsGroup:
