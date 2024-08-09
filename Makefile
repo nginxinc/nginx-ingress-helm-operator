@@ -60,6 +60,8 @@ KRP_IMAGE_BASE ?= quay.io/brancz/kube-rbac-proxy
 # kube-rbac-proxy image tag
 KRP_IMAGE_TAG ?= v0.18.0
 
+# image pull secret name: eg regcred
+IMAGE_PULL_SECRET_NAME ?=
 .PHONY: all
 all: docker-build
 
@@ -182,11 +184,13 @@ endif
 endif
 
 .PHONY: bundle
+patch = $(shell printf '[{"op":"add","path":"/spec/template/spec/imagePullSecrets","value":[{"name":"%s"}]}]' '$(strip $(IMAGE_PULL_SECRET_NAME))' )
 bundle: kustomize operator-sdk ## Generate bundle manifests and metadata, then validate generated files.
 	$(OPERATOR_SDK) generate kustomize manifests --interactive=false -q
 	cd config/manager && $(KUSTOMIZE) edit set image controller=$(IMG)
 	cd config/manifests/bases && $(KUSTOMIZE) edit set annotation containerImage:$(IMG)
 	cd config/default && $(KUSTOMIZE) edit set image kube-rbac-proxy=$(KRP_IMAGE_BASE):$(KRP_IMAGE_TAG)
+	if [ -n "$(IMAGE_PULL_SECRET_NAME)" ]; then cd config/default && $(KUSTOMIZE) edit add patch --kind Deployment --group apps --version v1 --name controller-manager --patch '${patch}'; fi
 	$(KUSTOMIZE) build config/manifests | $(OPERATOR_SDK) generate bundle $(BUNDLE_GEN_FLAGS)
 	@printf "%s\n" '' 'LABEL com.redhat.openshift.versions="v4.12"' 'LABEL com.redhat.delivery.operator.bundle=true' 'LABEL com.redhat.delivery.backport=true' >> bundle.Dockerfile
 	@printf "%s\n" '' '  # OpenShift annotations.' '  com.redhat.openshift.versions: v4.12' >> bundle/metadata/annotations.yaml
@@ -239,3 +243,4 @@ catalog-build: opm ## Build a catalog image.
 .PHONY: catalog-push
 catalog-push: ## Push a catalog image.
 	$(MAKE) docker-push IMG=$(CATALOG_IMG)
+
