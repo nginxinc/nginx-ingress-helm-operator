@@ -124,6 +124,7 @@ uninstall: kustomize ## Uninstall CRDs from the K8s cluster specified in ~/.kube
 .PHONY: deploy
 deploy: kustomize ## Deploy controller to the K8s cluster specified in ~/.kube/config.
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
+	cd config/default && $(KUSTOMIZE) edit set image kube-rbac-proxy=$(KRP_IMAGE_BASE):$(KRP_IMAGE_TAG)
 	$(KUSTOMIZE) build config/default | kubectl apply -f -
 
 .PHONY: undeploy
