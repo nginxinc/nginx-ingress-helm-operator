@@ -65,8 +65,8 @@ jobs:
           rm -f nginx-ingress/templates/controller-rolebinding.yaml
           sed -i '14s/name: {{ include "nginx-ingress.fullname" . }}/name: nginx-ingress-operator-nginx-ingress-admin/' nginx-ingress/templates/clusterrolebinding.yaml
           
-          mv ../schemas/v${{ inputs.k8s_version }} nginx-ingress/v${{ inputs.k8s_version }}
-          sed -i -e "s#ref\":.*_def#ref\": \"file://./helm-charts/nginx-ingress/v${{ inputs.k8s_version }}/_def#" nginx-ingress/values.schema.json
+          mv ../schemas/${{ inputs.k8s_version }} nginx-ingress/${{ inputs.k8s_version }}
+          sed -i -e "s#ref\":.*_def#ref\": \"file://./helm-charts/nginx-ingress/${{ inputs.k8s_version }}/_def#" nginx-ingress/values.schema.json
           rm -rf ../schemas
 
           new_nic_version=$(yq e '.appVersion' nginx-ingress/Chart.yaml)
@@ -107,11 +107,13 @@ jobs:
         uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6.1.0
         with:
           token: ${{ secrets.NGINX_PAT }}
-          commit-message: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}
-          title: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}
-          branch: feat/update-nic-to-${{ steps.sync.outputs.new_version }}
+          commit-message: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_nic_version }}
+          title: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_nic_version }}
+          branch: feat/update-nic-to-${{ steps.sync.outputs.new_nic_version }}
           author: nginx-bot <integrations@nginx.com>
           body: |
-            This automated PR updates the NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}.
+            This automated PR updates the NGINX Ingress Controller to ${{ steps.sync.outputs.new_nic_version }}.
             The Helm Chart was updated to ${{ inputs.chart_version }}.
+            The Operator was updated to ${{ inputs.operator_version }}.
+            Kubernetes was updated to ${{ inputs.k8s_version }}.
         if: ${{ ! inputs.dry_run }}
