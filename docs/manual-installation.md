@@ -39,3 +39,23 @@ Alternatively, to create an SCC for NIC daemonsets, please run this command:
 You can now deploy the NGINX Ingress Controller instances.
 
 **Note: If you're upgrading your operator installation to a later release, navigate [here](../helm-charts/nginx-ingress/) and run `kubectl apply -f crds/` or `oc apply -f crds/` as a prerequisite**
+
+## Private Registry
+You can use the operator (including the kube-rbac-proxy) images from your own private registry.
+1. Tag the images for your private registry
+   ```shell
+   docker tag quay.io/nginx/nginx-ingress-operator:2.3.1 <my-private-registry>/nginx-ingress-operator:2.3.1
+   docker tag quay.io/brancz/kube-rbac-proxy:v0.18.0 <my-private-registry>/kube-rbac-proxy:v0.18.0
+   ```
+
+2. Push the image to your private registry
+   ```shell
+   docker push <my-private-registry>/nginx-ingress-operator:2.3.1
+   docker push <my-private-registry>/kube-rbac-proxy:v0.18.0
+   ```
+
+3. Follow step 1 above but in step 1.2 you can run
+   ```shell
+   make deploy IMG=<my-private-registry>/nginx-ingress-operator:2.3.1 KRP_IMAGE_BASE=<my-private-registry>/kube-rbac-proxy
+   ```
+   **Note: If you need to use a different `kube-rbac-proxy` version than the default, use the `KRP_IMAGE_TAG` variable**
