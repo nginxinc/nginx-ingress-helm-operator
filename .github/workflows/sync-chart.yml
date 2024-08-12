@@ -35,7 +35,7 @@ jobs:
         with:
           token: ${{ secrets.NGINX_PAT }}
 
-      - name: Checkout Kuberneres json schema
+      - name: Checkout Kubernetes json schemas
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           repository: nginxinc/kubernetes-json-schema
