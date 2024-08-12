@@ -93,6 +93,11 @@ jobs:
           regex: false
           exclude: .github/**
 
+      - name: Update bundle files
+        run: |
+          make bundle
+        if: ${{ inputs.dry_run }}
+
       - name: Run Diff
         run: |
           git diff
