@@ -1,12 +1,24 @@
-name: Sync Helm Chart
+name: Prepare Operator Release
 
 on:
   workflow_dispatch:
     inputs:
       chart_version:
-        description: "Chart version"
+        description: "Chart version, e.g. x.y.z"
+        type: string
         required: true
-        default: "0.0.0"
+      operator_version:
+        description: "Operator version, e.g. x.y.z"
+        type: string
+        required: true
+      k8s_version:
+        description: "Kubernetes version, e.g. vx.y.z"
+        type: string
+        required: true
+      dry_run:
+        description: "Do not commit to a PR"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -18,9 +30,16 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Checkout
+      - name: Checkout Operator
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
+          token: ${{ secrets.NGINX_PAT }}
+
+      - name: Checkout Kubernetes json schemas
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          repository: nginxinc/kubernetes-json-schema
+          path: schemas
           token: ${{ secrets.NGINX_PAT }}
 
       - name: Setup Helm
@@ -31,12 +50,13 @@ jobs:
       - name: Sync
         id: sync
         run: |
-          current_version=$(yq e '.appVersion' helm-charts/nginx-ingress/Chart.yaml)
-          echo "Current NIC version: $current_version"
+          current_nic_version=$(yq e '.appVersion' helm-charts/nginx-ingress/Chart.yaml)
+          echo "Current NIC version: $current_nic_version"
+
+          current_operator_version=$(egrep '^VERSION' Makefile  | awk '{ print $3 }')
+          echo "Current Operator version: $current_operator_version"
 
           cd helm-charts/
-          schema_dir=$(cd nginx-ingress && echo v1.*)
-          mv nginx-ingress/$schema_dir $schema_dir
           rm -rf nginx-ingress
 
           helm pull oci://ghcr.io/nginxinc/charts/nginx-ingress --untar --version ${{ inputs.chart_version }}
@@ -44,29 +64,56 @@ jobs:
           rm -f nginx-ingress/templates/controller-role.yaml
           rm -f nginx-ingress/templates/controller-rolebinding.yaml
           sed -i '14s/name: {{ include "nginx-ingress.fullname" . }}/name: nginx-ingress-operator-nginx-ingress-admin/' nginx-ingress/templates/clusterrolebinding.yaml
-          mv $schema_dir nginx-ingress/
+          
+          mv ../schemas/${{ inputs.k8s_version }} nginx-ingress/${{ inputs.k8s_version }}
+          sed -i -e "s#ref\":.*_def#ref\": \"file://./helm-charts/nginx-ingress/${{ inputs.k8s_version }}/_def#" nginx-ingress/values.schema.json
+          rm -rf ../schemas
 
-          new_version=$(yq e '.appVersion' nginx-ingress/Chart.yaml)
-          echo "New NIC version: $new_version"
+          new_nic_version=$(yq e '.appVersion' nginx-ingress/Chart.yaml)
+          echo "New NIC version: $new_nic_version"
 
-          echo current_version=$current_version >> $GITHUB_OUTPUT
-          echo new_version=$new_version >> $GITHUB_OUTPUT
+          echo current_nic_version=$current_nic_version >> $GITHUB_OUTPUT
+          echo current_operator_version=$current_operator_version >> $GITHUB_OUTPUT
+          echo new_nic_version=$new_nic_version >> $GITHUB_OUTPUT
+          echo new_operator_version=${{ inputs.operator_version }} >> $GITHUB_OUTPUT
 
-      - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@099c88fbf2a7da26b083521a8bfa13e4f0886b97 # v3.0.3
+      - name: Find and Replace NIC version
+        uses: jacobtomlinson/gha-find-replace@a51bbcd94d000df9ca0fcb54ec8be69aad8374b0 # v3.0.2
         with:
-          find: ${{ steps.sync.outputs.current_version }}
-          replace: ${{ steps.sync.outputs.new_version }}
+          find: ${{ steps.sync.outputs.current_nic_version }}
+          replace: ${{ steps.sync.outputs.new_nic_version }}
           regex: false
+          exclude: .github/**
+
+      - name: Find and Replace Operator version
+        uses: jacobtomlinson/gha-find-replace@a51bbcd94d000df9ca0fcb54ec8be69aad8374b0 # v3.0.2
+        with:
+          find: ${{ steps.sync.outputs.current_operator_version }}
+          replace: ${{ steps.sync.outputs.new_operator_version }}
+          regex: false
+          exclude: .github/**
+
+      - name: Update bundle files
+        run: |
+          make bundle
+        if: ${{ inputs.dry_run }}
+
+      - name: Run Diff
+        run: |
+          git diff
+        if: ${{ inputs.dry_run }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6.1.0
         with:
           token: ${{ secrets.NGINX_PAT }}
-          commit-message: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}
-          title: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}
-          branch: feat/update-nic-to-${{ steps.sync.outputs.new_version }}
+          commit-message: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_nic_version }}
+          title: Update NGINX Ingress Controller to ${{ steps.sync.outputs.new_nic_version }}
+          branch: feat/update-nic-to-${{ steps.sync.outputs.new_nic_version }}
           author: nginx-bot <integrations@nginx.com>
           body: |
-            This automated PR updates the NGINX Ingress Controller to ${{ steps.sync.outputs.new_version }}.
+            This automated PR updates the NGINX Ingress Controller to ${{ steps.sync.outputs.new_nic_version }}.
             The Helm Chart was updated to ${{ inputs.chart_version }}.
+            The Operator was updated to ${{ inputs.operator_version }}.
+            Kubernetes was updated to ${{ inputs.k8s_version }}.
+        if: ${{ ! inputs.dry_run }}
