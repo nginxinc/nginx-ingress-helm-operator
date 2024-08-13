@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: quay.io/nginx/nginx-ingress-operator
-  newTag: 2.3.1
+  newTag: 2.3.0
