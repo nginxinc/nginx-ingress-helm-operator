@@ -58,5 +58,6 @@ You can use the operator (including the kube-rbac-proxy) images from your own pr
    ```shell
    make deploy IMG=<my-private-registry>/nginx-ingress-operator:2.3.1 KRP_IMAGE_BASE=<my-private-registry>/kube-rbac-proxy
    ```
-   **Note: If you need to use a different `kube-rbac-proxy` version than the default, use the `KRP_IMAGE_TAG` variable**
-   **Note: To use an image pull secret, you can specify the IMAGE_PULL_SECRET_NAME variable, eg IMAGE_PULL_SECRET_NAME=regcred**
+   **Note: If you need to use a different `kube-rbac-proxy` version than the default, use the `KRP_IMAGE_TAG` variable**  
+
+   **Note: To use an image pull secret, you can specify the `IMAGE_PULL_SECRET_NAME` variable, eg `IMAGE_PULL_SECRET_NAME=regcred`**
