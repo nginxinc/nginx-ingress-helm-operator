@@ -78,7 +78,7 @@ jobs:
           echo new_operator_version=${{ inputs.operator_version }} >> $GITHUB_OUTPUT
 
       - name: Find and Replace NIC version
-        uses: jacobtomlinson/gha-find-replace@099c88fbf2a7da26b083521a8bfa13e4f0886b97 # v3.0.3
+        uses: jacobtomlinson/gha-find-replace@1dcd8b008d15ef0862ae785c76d1419cca930e15 # v3.0.4
         with:
           find: ${{ steps.sync.outputs.current_nic_version }}
           replace: ${{ steps.sync.outputs.new_nic_version }}
@@ -86,7 +86,7 @@ jobs:
           exclude: .github/**
 
       - name: Find and Replace Operator version
-        uses: jacobtomlinson/gha-find-replace@099c88fbf2a7da26b083521a8bfa13e4f0886b97 # v3.0.3
+        uses: jacobtomlinson/gha-find-replace@1dcd8b008d15ef0862ae785c76d1419cca930e15 # v3.0.4
         with:
           find: ${{ steps.sync.outputs.current_operator_version }}
           replace: ${{ steps.sync.outputs.new_operator_version }}
