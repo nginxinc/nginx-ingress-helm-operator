@@ -208,10 +208,10 @@
                     },
                     "tag": {
                       "type": "string",
-                      "default": "5.2.0",
+                      "default": "5.3.0",
                       "title": "The tag of the  App Protect WAF v5 Enforcer image",
                       "examples": [
-                        "5.2.0"
+                        "5.3.0"
                       ]
                     },
                     "digest": {
@@ -248,7 +248,7 @@
                   "examples": [
                     {
                       "repository": "private-registry.nginx.com/nap/waf-enforcer",
-                      "tag": "5.2.0",
+                      "tag": "5.3.0",
                       "pullPolicy": "IfNotPresent"
                     }
                   ]
@@ -282,10 +282,10 @@
                     },
                     "tag": {
                       "type": "string",
-                      "default": "5.2.0",
+                      "default": "5.3.0",
                       "title": "The tag of the  App Protect WAF v5 Config Manager image",
                       "examples": [
-                        "5.2.0"
+                        "5.3.0"
                       ]
                     },
                     "digest": {
@@ -322,7 +322,7 @@
                   "examples": [
                     {
                       "repository": "private-registry.nginx.com/nap/waf-config-mgr",
-                      "tag": "5.2.0",
+                      "tag": "5.3.0",
                       "pullPolicy": "IfNotPresent"
                     }
                   ]
@@ -540,10 +540,10 @@
             },
             "tag": {
               "type": "string",
-              "default": "3.6.2",
+              "default": "3.7.0",
               "title": "The tag of the Ingress Controller image",
               "examples": [
-                "3.6.2"
+                "3.7.0"
               ]
             },
             "digest": {
@@ -580,7 +580,7 @@
           "examples": [
             {
               "repository": "nginx/nginx-ingress",
-              "tag": "3.6.2",
+              "tag": "3.7.0",
               "pullPolicy": "IfNotPresent"
             }
           ]
@@ -908,14 +908,6 @@
             false
           ]
         },
-        "includeYear": {
-          "type": "boolean",
-          "default": false,
-          "title": "The includeYear",
-          "examples": [
-            false
-          ]
-        },
         "enableTLSPassthrough": {
           "type": "boolean",
           "default": false,
@@ -1001,6 +993,22 @@
                         "title": "The name",
                         "examples": [
                           "dns-tcp"
+                        ]
+                      },
+                      "ipv4": {
+                        "type": "string",
+                        "default": "",
+                        "title": "The ipv4 ip",
+                        "examples": [
+                          "127.0.0.1"
+                        ]
+                      },
+                      "ipv6": {
+                        "type": "string",
+                        "default": "",
+                        "title": "The ipv6 ip",
+                        "examples": [
+                          "::1"
                         ]
                       }
                     }
@@ -1670,7 +1678,7 @@
           "customPorts": [],
           "image": {
             "repository": "nginx/nginx-ingress",
-            "tag": "3.6.2",
+            "tag": "3.7.0",
             "digest": "",
             "pullPolicy": "IfNotPresent"
           },
@@ -1728,7 +1736,6 @@
           "watchNamespace": "",
           "enableCustomResources": true,
           "enableOIDC": false,
-          "includeYear": false,
           "enableTLSPassthrough": false,
           "tlsPassthroughPort": 443,
           "enableCertManager": false,
@@ -2211,7 +2218,7 @@
         "customPorts": [],
         "image": {
           "repository": "nginx/nginx-ingress",
-          "tag": "3.6.2",
+          "tag": "3.7.0",
           "digest": "",
           "pullPolicy": "IfNotPresent"
         },
@@ -2262,7 +2269,6 @@
         "watchNamespace": "",
         "enableCustomResources": true,
         "enableOIDC": false,
-        "includeYear": false,
         "enableTLSPassthrough": false,
         "enableCertManager": false,
         "enableExternalDNS": false,
