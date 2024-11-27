@@ -97,7 +97,7 @@ jobs:
             description="The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers"
 
       - name: Build Image
-        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6.9.0
+        uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
         with:
           context: "."
           cache-from: type=gha
@@ -113,7 +113,7 @@ jobs:
           provenance: false
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@915b19bbe73b92a6cf82a1bc12b087c9a19a5fe2 # 0.28.0
+        uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # 0.29.0
         continue-on-error: true
         with:
           image-ref: nginx/nginx-ingress-operator:${{ steps.meta.outputs.version }}
@@ -122,7 +122,7 @@ jobs:
           ignore-unfixed: "true"
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.4
+        uses: github/codeql-action/upload-sarif@f09c1c0a94de965c15400f5634aa42fac8fb8f88 # v3.27.5
         continue-on-error: true
         with:
           sarif_file: "trivy-results.sarif"
