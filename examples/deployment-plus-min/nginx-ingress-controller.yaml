@@ -16,6 +16,8 @@ spec:
       name: nginx
     kind: deployment
     nginxplus: true
+    mgmt:
+      licenseTokenSecretName: "license-token"
     service:
       type: NodePort
   rbac:
