@@ -94,7 +94,11 @@ metadata:
               "initContainers": [],
               "kind": "deployment",
               "lifecycle": {},
-              "logLevel": 1,
+              "logFormat": "glog",
+              "logLevel": "info",
+              "mgmt": {
+                "licenseTokenSecretName": "license-token"
+              },
               "minReadySeconds": 0,
               "name": "controller",
               "nginxDebug": false,
@@ -221,7 +225,7 @@ metadata:
     categories: Monitoring, Networking
     certified: "true"
     containerImage: quay.io/nginx/nginx-ingress-operator:3.0.0
-    createdAt: "2024-11-25T17:47:09Z"
+    createdAt: "2024-12-16T16:44:03Z"
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
     features.operators.openshift.io/cnf: "false"
