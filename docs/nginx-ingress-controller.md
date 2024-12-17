@@ -45,8 +45,8 @@ spec:
     dnsPolicy: ClusterFirst
     nginxDebug: false
     shareProcessNamespace: false
-    logFormat: "glog"
-    logLevel: "info"
+    logFormat: glog
+    logLevel: info
     customPorts: []
     image:
       repository: nginx/nginx-ingress
