@@ -189,7 +189,7 @@ rules:
   resources:
   - nodes
   verbs:
-  - get
+  - list
 - apiGroups:
   - ""
   resources:
