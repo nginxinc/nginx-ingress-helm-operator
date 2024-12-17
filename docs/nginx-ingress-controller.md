@@ -22,6 +22,8 @@ spec:
     selectorLabels: {}
     annotations: {}
     nginxplus: false
+    mgmt:
+      licenseTokenSecretName: "license-token"
     nginxReloadTimeout: 60000
     appprotect:
       enable: false
@@ -43,11 +45,12 @@ spec:
     dnsPolicy: ClusterFirst
     nginxDebug: false
     shareProcessNamespace: false
-    logLevel: 1
+    logFormat: glog
+    logLevel: info
     customPorts: []
     image:
       repository: nginx/nginx-ingress
-      tag: "3.7.2-ubi"
+      tag: "4.0.0-ubi"
       # digest: "sha256:CHANGEME"
       pullPolicy: IfNotPresent
     lifecycle: {}
@@ -127,7 +130,6 @@ spec:
     watchSecretNamespace: ""
     enableCustomResources: true
     enableOIDC: false
-    includeYear: false
     enableTLSPassthrough: false
     tlsPassthroughPort: 443
     enableCertManager: false

@@ -11,11 +11,13 @@ spec:
     image:
       pullPolicy: IfNotPresent
       repository: nginx/nginx-ingress
-      tag: 3.7.2-ubi
+      tag: 4.0.0-ubi
     ingressClass:
       name: nginx
     kind: deployment
     nginxplus: true
+    mgmt:
+      licenseTokenSecretName: "license-token"
     service:
       type: NodePort
   rbac:
