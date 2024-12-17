@@ -22,6 +22,8 @@ spec:
     selectorLabels: {}
     annotations: {}
     nginxplus: false
+    mgmt:
+      licenseTokenSecretName: "license-token"
     nginxReloadTimeout: 60000
     appprotect:
       enable: false
@@ -43,7 +45,8 @@ spec:
     dnsPolicy: ClusterFirst
     nginxDebug: false
     shareProcessNamespace: false
-    logLevel: 1
+    logFormat: "glog"
+    logLevel: "info"
     customPorts: []
     image:
       repository: nginx/nginx-ingress
