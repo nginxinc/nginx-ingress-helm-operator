@@ -1,4 +1,4 @@
-name: CI
+name: Create Bundle Approval PR
 
 on:
   workflow_dispatch:
