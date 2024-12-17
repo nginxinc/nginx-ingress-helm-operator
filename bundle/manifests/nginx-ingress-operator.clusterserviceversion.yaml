@@ -79,7 +79,6 @@ metadata:
                 "repository": "nginx/nginx-ingress",
                 "tag": "4.0.0-ubi"
               },
-              "includeYear": false,
               "ingressClass": {
                 "create": true,
                 "name": "nginx",
@@ -225,7 +224,7 @@ metadata:
     categories: Monitoring, Networking
     certified: "true"
     containerImage: quay.io/nginx/nginx-ingress-operator:3.0.0
-    createdAt: "2024-12-16T16:44:03Z"
+    createdAt: "2024-12-17T10:28:34Z"
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
     features.operators.openshift.io/cnf: "false"

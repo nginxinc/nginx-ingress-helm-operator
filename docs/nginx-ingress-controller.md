@@ -127,7 +127,6 @@ spec:
     watchSecretNamespace: ""
     enableCustomResources: true
     enableOIDC: false
-    includeYear: false
     enableTLSPassthrough: false
     tlsPassthroughPort: 443
     enableCertManager: false
