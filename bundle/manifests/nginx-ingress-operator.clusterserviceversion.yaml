@@ -335,6 +335,13 @@ spec:
           - delete
           - get
         - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - list
+          - watch
+        - apiGroups:
           - charts.nginx.org
           resources:
           - nginxingresses
