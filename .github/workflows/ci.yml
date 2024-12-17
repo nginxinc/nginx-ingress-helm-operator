@@ -47,7 +47,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-        if: github.event_name == 'pull_request'
+        if: github.event_name != 'pull_request'
 
       - name: Login to Quay.io
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
@@ -79,7 +79,10 @@ jobs:
         with:
           images: |
             ghcr.io/nginxinc/nginx-ingress-operator
+            quay.io/nginx/nginx-ingress-operator
+            nginx/nginx-ingress-operator
           tags: |
+            type=edge
             type=ref,event=pr
             type=semver,pattern={{version}}
           labels: |
@@ -103,7 +106,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ github.event_name != 'pull_request' && env.platforms || '' }}
           load: ${{ github.event_name == 'pull_request' }}
-          push: ${{ github.event_name == 'pull_request' }}
+          push: ${{ github.event_name = 'pull_request' }}
           no-cache: ${{ github.event_name != 'pull_request' }}
           pull: true
           sbom: ${{ github.event_name != 'pull_request' }}
