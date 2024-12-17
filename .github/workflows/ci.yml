@@ -78,9 +78,9 @@ jobs:
         uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
         with:
           images: |
+            nginx/nginx-ingress-operator
             ghcr.io/nginxinc/nginx-ingress-operator
             quay.io/nginx/nginx-ingress-operator
-            nginx/nginx-ingress-operator
           tags: |
             type=edge
             type=ref,event=pr
@@ -106,7 +106,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ github.event_name != 'pull_request' && env.platforms || '' }}
           load: ${{ github.event_name == 'pull_request' }}
-          push: ${{ github.event_name = 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' }}
           no-cache: ${{ github.event_name != 'pull_request' }}
           pull: true
           sbom: ${{ github.event_name != 'pull_request' }}
