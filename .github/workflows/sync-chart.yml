@@ -59,7 +59,7 @@ jobs:
           cd helm-charts/
           rm -rf nginx-ingress
 
-          helm pull oci://ghcr.io/nginxinc/charts/nginx-ingress --untar --version ${{ inputs.chart_version }}
+          helm pull oci://ghcr.io/nginx/charts/nginx-ingress --untar --version ${{ inputs.chart_version }}
           rm -f nginx-ingress/templates/clusterrole.yaml
           rm -f nginx-ingress/templates/controller-role.yaml
           rm -f nginx-ingress/templates/controller-rolebinding.yaml
