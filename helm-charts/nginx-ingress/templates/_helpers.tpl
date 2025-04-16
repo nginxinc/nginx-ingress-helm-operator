@@ -230,7 +230,7 @@ Build the args for the service binary.
 - --continue
 {{- end }}
 - --
-{{- end -}}
+{{- end }}
 - -nginx-plus={{ .Values.controller.nginxplus }}
 - -nginx-reload-timeout={{ .Values.controller.nginxReloadTimeout }}
 - -enable-app-protect={{ .Values.controller.appprotect.enable }}
@@ -354,6 +354,8 @@ List of volumes for controller.
   emptyDir: {}
 - name: nginx-lib
   emptyDir: {}
+- name: nginx-state
+  emptyDir: {}
 - name: nginx-log
   emptyDir: {}
 {{- end }}
@@ -405,6 +407,8 @@ volumeMounts:
   name: nginx-cache
 - mountPath: /var/lib/nginx
   name: nginx-lib
+- mountPath: /var/lib/nginx/state
+  name: nginx-state
 - mountPath: /var/log/nginx
   name: nginx-log
 {{- end }}

@@ -25,6 +25,8 @@ controller:
     # usageReport:
     #   endpoint: "product.connect.nginx.com" # Endpoint for usage report
     #   interval: 1h
+    #   proxyHost: "proxy.example.com:3138" # Proxy server for usage report, with optional port
+    #   proxyCredentialsSecretName: "proxy-credentials" # Secret containing proxy credentials, must contain a `username` and `password` field
 
     ## Configures the ssl_verify directive in the mgmt block
     # sslVerify: true
@@ -82,7 +84,7 @@ controller:
         repository: private-registry.nginx.com/nap/waf-enforcer
 
         ## The tag of the App Protect WAF v5 Enforcer image.
-        tag: "5.4.0"
+        tag: "5.6.0"
         ## The digest of the App Protect WAF v5 Enforcer image.
         ## If digest is specified it has precedence over tag and will be used instead
         # digest: "sha256:CHANGEME"
@@ -98,7 +100,7 @@ controller:
         repository: private-registry.nginx.com/nap/waf-config-mgr
 
         ## The tag of the App Protect WAF v5 Configuration Manager image.
-        tag: "5.4.0"
+        tag: "5.6.0"
         ## The digest of the App Protect WAF v5 Configuration Manager image.
         ## If digest is specified it has precedence over tag and will be used instead
         # digest: "sha256:CHANGEME"
@@ -170,7 +172,7 @@ controller:
     repository: nginx/nginx-ingress
 
     ## The tag of the Ingress Controller image. If not specified the appVersion from Chart.yaml is used as a tag.
-    # tag: "4.0.1"
+    # tag: "5.0.0"
     ## The digest of the Ingress Controller image.
     ## If digest is specified it has precedence over tag and will be used instead
     # digest: "sha256:CHANGEME"
@@ -478,6 +480,9 @@ controller:
       ## The HTTP port on the POD where the Ingress Controller service is running.
       targetPort: 80
 
+      ## The name of the HTTP port.
+      name: "http"
+
     httpsPort:
       ## Enables the HTTPS port for the Ingress Controller service.
       enable: true
@@ -490,6 +495,9 @@ controller:
 
       ## The HTTPS port on the POD where the Ingress Controller service is running.
       targetPort: 443
+
+      ## The name of the HTTPS port.
+      name: "https"
 
     ## A list of custom ports to expose through the Ingress Controller service. Follows the conventional Kubernetes yaml syntax for service ports.
     customPorts: []
