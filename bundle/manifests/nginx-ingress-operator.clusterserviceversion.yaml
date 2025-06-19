@@ -224,7 +224,7 @@ metadata:
     categories: Monitoring, Networking
     certified: "true"
     containerImage: quay.io/nginx/nginx-ingress-operator:3.1.0
-    createdAt: "2025-04-16T14:53:55Z"
+    createdAt: "2025-06-19T11:37:21Z"
     description: The NGINX Ingress Operator is a Kubernetes/OpenShift component which
       deploys and manages one or more NGINX/NGINX Plus Ingress Controllers
     features.operators.openshift.io/cnf: "false"
@@ -238,7 +238,7 @@ metadata:
     features.operators.openshift.io/token-auth-azure: "false"
     features.operators.openshift.io/token-auth-gcp: "false"
     operatorframework.io/suggested-namespace: nginx-ingress
-    operators.operatorframework.io/builder: operator-sdk-v1.39.2
+    operators.operatorframework.io/builder: operator-sdk-v1.40.0
     operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
     repository: https://github.com/nginxinc/nginx-ingress-helm-operator
     support: NGINX Inc.
